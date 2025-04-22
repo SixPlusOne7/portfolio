@@ -1,0 +1,30 @@
+User Interface
+  Debug
+    - Accepts "./project1 debug" with the word "debug" in exact characters.
+    - Rejects inputs that are longer or shorter than "debug."
+
+  Account Number
+    - Only accepts a 6-digit account number. If the user inputs more than 6 digits, the program prompts the user to enter a 6-digit account number again.
+    - When the user presses enter ('\n') or only types white space, the program doesn’t output any messages. scanf will keep waiting until the user types characters other than white space.
+    - If the user types "123 456" or "123abc", it accepts "123" as the account number. If the user types "abc123", it rejects the input.
+
+  Address Function
+    - The function accepts user input until the user types "|".
+    - When the input exceeds the address array size, the function accepts characters up to one less than the array size and ignores the rest of the input.
+    - The array size is 45, so the function accepts 44 characters.
+
+Add Function
+  - No issues were encountered with the add function during testing. All records are added in order and added successfully.
+
+Delete Function
+  - No issues were encountered with the delete function during testing. All records are deleted successfully.
+
+Find Function
+  - The find function is able to locate all records without any issues.
+
+Read Function
+  - The read function successfully reads all data. The account number is read using fscanf until a newline. The name is read using fgets until a newline, with the newline included and later removed from the array. The address is read using fgetc and ends with a null character in the character array.
+
+Write Function
+  - The write function successfully writes all records. In the file, it writes the account number followed by a newline, writes the name followed by a newline, and writes the address followed by "|".
+
