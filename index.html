@@ -40,11 +40,21 @@
                 </div>
                 <div class="project-card">
                     <h3>Bank Record Management System (C Project)</h3>
-                    <p>A command-line program in C to manage bank records using a linked list. Features include adding, finding, deleting, and printing records. Includes file read/write for persistent storage.</p>
+                    <p>This is a terminal-based C program that lets users manage a list of bank account records. It allows adding, finding, deleting, and displaying records, and saves data to a file for persistent storage. The system uses a linked list to store data in memory and ensures all user input is validated before processing, preventing crashes or unexpected behavior.</p>
                 
                     <ul>
                         <li><strong>Language:</strong> C</li>
-                        <li><strong>Concepts:</strong> Pointers, Structs, File I/O, Memory Management</li>
+                        <li><strong>Concepts:</strong> Pointers, Structs, Linked Lists, File I/O, Memory Management</li>
+                        <li><strong>Input Handling:</strong> Thorough input validation ensures safe handling of account numbers, names, and addresses. For example, invalid input is rejected and the user is re-prompted until valid input is received.</li>
+                        <li><strong>Structure:</strong>
+                            <ul>
+                                <li><strong>user_interface.c</strong>: Handles the user menu, input logic, and function calls</li>
+                                <li><strong>database.c</strong>: Implements core functions like <code>addRecord</code>, <code>findRecord</code>, <code>deleteRecord</code>, <code>printAllRecords</code>, <code>readfile</code>, and <code>writefile</code></li>
+                                <li><strong>record.h</strong>: Defines the structure for each record</li>
+                                <li><strong>database.h</strong>: Contains function prototypes shared across files</li>
+                            </ul>
+                        </li>
+                        <li><strong>Reliability:</strong> All core features were tested successfully. The program reads and writes data in the correct format and maintains memory integrity by cleaning up all dynamically allocated memory on exit.</li>
                     </ul>
                 
                     <p><strong>Click to view code files:</strong></p>
