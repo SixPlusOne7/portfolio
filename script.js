@@ -122,17 +122,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function escapeHTML(str) {
+    return str.replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#039;');
+}
+
 function loadCode(filename) {
     const pre = document.getElementById('code-' + filename);
     if (pre.style.display === 'none') {
-        fetch('code/' + filename)  // Make sure code files are in a /code/ folder
-            .then(res => res.text())
+        fetch('code/' + filename)
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`File not found: ${filename}`);
+                }
+                return res.text();
+            })
             .then(data => {
-                pre.textContent = data;
+                pre.innerHTML = escapeHTML(data);
+                pre.style.display = 'block';
+            })
+            .catch(err => {
+                pre.innerHTML = `<span style="color:red;">Error loading file: ${err.message}</span>`;
                 pre.style.display = 'block';
             });
     } else {
         pre.style.display = 'none';
     }
 }
-
