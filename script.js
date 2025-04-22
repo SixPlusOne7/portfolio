@@ -121,3 +121,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function loadCode(filename) {
+    const pre = document.getElementById('code-' + filename);
+    if (pre.style.display === 'none') {
+        fetch('code/' + filename)  // Make sure code files are in a /code/ folder
+            .then(res => res.text())
+            .then(data => {
+                pre.textContent = data;
+                pre.style.display = 'block';
+            });
+    } else {
+        pre.style.display = 'none';
+    }
+}
+
