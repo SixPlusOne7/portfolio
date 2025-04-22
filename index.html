@@ -17,69 +17,6 @@
         </div>
     </section>
 
-    <section id="coding" class="section">
-        <div class="container">
-            <h2>Coding Projects</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <h3>Kinematic Analysis of Undulatory Swimmers for Bio-inspired Robotics</h3>
-                    <p><em>Python tool to quantify swimming mechanics and guide energy-efficient robot design</em></p>
-                    <p>I wrote this code to analyze video frames of undulatory swimmers, such as fish and bio-inspired robots, to study their body shapes and movement patterns. By tracking features such as head angle and swimming speed, the code can be used to better understand underwater locomotion and support the development of robotic models that mimic efficient biological movement.</p>
-                    <ul>
-                    <li><strong>Body Shape Extraction</strong>: Track body midlines by marking points from head to tail.</li>  
-                    <li><strong>Curve Generation</strong>: Convert points into smooth curves using interpolation.</li>  
-                    <li><strong>Movement Analysis</strong>: Measure head angle and speed to study movement efficiency.</li>  
-                    <li><strong>Data Visualization</strong>: Plot curves and data points to compare body shapes.</li>  
-                    </ul>  
-                    <p><strong>Tools</strong>: Python, OpenCV, SciPy, Matplotlib</p>  
-                    <div class="media">
-                        <img src="portfolio_images_rest/Image_processing_data_extracting.png" alt="Image_processing_data_extracting" width="320" title="Click to enlarge">
-                        <img src="portfolio_images_rest/Larva Fish Midline Extraction (1).png" alt="Larva Fish Midline Extraction (1)" width="320" title="Click to enlarge">
-                        <img src="portfolio_images_rest/Larva Fish Midline Extraction.png" alt="Larva Fish Midline Extraction" width="320" title="Click to enlarge">
-                    </div>
-                </div>
-                <div class="project-card">
-                    <h3>Bank Record Management System (C Project)</h3>
-                    <p>I developed a terminal-based C program that manages a list of bank account records. It allows users to add, find, delete, and display records, and saves data to a file for persistent storage. I used a linked list to store the data in memory, and implemented input validation to make sure the program handles all user input safely without crashing or misbehaving.</p>                
-                    <ul>
-                        <li><strong>Language:</strong> C</li>
-                        <li><strong>Concepts:</strong> Pointers, Structs, Linked Lists, File I/O, Memory Management</li>
-                        <li><strong>Input Handling:</strong> Thorough input validation ensures safe handling of account numbers, names, and addresses. For example, invalid input is rejected and the user is re-prompted until valid input is received.</li>
-                        <li><strong>Structure:</strong>
-                            <ul>
-                                <li><strong>user_interface.c</strong>: Handles the user menu, input logic, and function calls</li>
-                                <li><strong>database.c</strong>: Implements core functions like <code>addRecord</code>, <code>findRecord</code>, <code>deleteRecord</code>, <code>printAllRecords</code>, <code>readfile</code>, and <code>writefile</code></li>
-                                <li><strong>record.h</strong>: Defines the structure for each record</li>
-                                <li><strong>database.h</strong>: Contains function prototypes shared across files</li>
-                            </ul>
-                        </li>
-                        <li><strong>Reliability:</strong> All core features were tested successfully. The program reads and writes data in the correct format and maintains memory integrity by cleaning up all dynamically allocated memory on exit.</li>
-                    </ul>
-                
-                    <p><strong>Click to view code files:</strong></p>
-                
-                    <div>
-                        <button onclick="loadCode('database.c')">database.c</button>
-                        <pre id="code-database.c" class="code-block" style="display: none;"></pre>
-                
-                        <button onclick="loadCode('user_interface.c')">user_interface.c</button>
-                        <pre id="code-user_interface.c" class="code-block" style="display: none;"></pre>
-                
-                        <button onclick="loadCode('database.h')">database.h</button>
-                        <pre id="code-database.h" class="code-block" style="display: none;"></pre>
-                
-                        <button onclick="loadCode('record.h')">record.h</button>
-                        <pre id="code-record.h" class="code-block" style="display: none;"></pre>
-
-                        <button onclick="loadCode('summary.txt')">summary.txt</button>
-                        <pre id="code-summary.txt" class="code-block" style="display: none;"></pre>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section id="engineering" class="section">
         <div class="container">
             <h2>Engineering Projects</h2>
@@ -145,6 +82,68 @@
                         <img src="portfolio_images_rest/UHDT battery mount.png" alt="UHDT Battery Mount" width="320" title="Click to enlarge">
                         <img src="portfolio_images_rest/IMG_8708.png" alt="UHDT Landing Gear 1" width="320" title="Click to enlarge">
                         <img src="portfolio_images_rest/IMG_8709.png" alt="UHDT Landing Gear 2" width="320" title="Click to enlarge">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="coding" class="section">
+        <div class="container">
+            <h2>Coding Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>Kinematic Analysis of Undulatory Swimmers for Bio-inspired Robotics</h3>
+                    <p><em>Python tool to quantify swimming mechanics and guide energy-efficient robot design</em></p>
+                    <p>I wrote this code to analyze video frames of undulatory swimmers, such as fish and bio-inspired robots, to study their body shapes and movement patterns. By tracking features such as head angle and swimming speed, the code can be used to better understand underwater locomotion and support the development of robotic models that mimic efficient biological movement.</p>
+                    <ul>
+                    <li><strong>Body Shape Extraction</strong>: Track body midlines by marking points from head to tail.</li>  
+                    <li><strong>Curve Generation</strong>: Convert points into smooth curves using interpolation.</li>  
+                    <li><strong>Movement Analysis</strong>: Measure head angle and speed to study movement efficiency.</li>  
+                    <li><strong>Data Visualization</strong>: Plot curves and data points to compare body shapes.</li>  
+                    </ul>  
+                    <p><strong>Tools</strong>: Python, OpenCV, SciPy, Matplotlib</p>  
+                    <div class="media">
+                        <img src="portfolio_images_rest/Image_processing_data_extracting.png" alt="Image_processing_data_extracting" width="320" title="Click to enlarge">
+                        <img src="portfolio_images_rest/Larva Fish Midline Extraction (1).png" alt="Larva Fish Midline Extraction (1)" width="320" title="Click to enlarge">
+                        <img src="portfolio_images_rest/Larva Fish Midline Extraction.png" alt="Larva Fish Midline Extraction" width="320" title="Click to enlarge">
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>Bank Record Management System (C Project)</h3>
+                    <p>I developed a terminal-based C program that manages a list of bank account records. It allows users to add, find, delete, and display records, and saves data to a file for persistent storage. I used a linked list to store the data in memory, and implemented input validation to make sure the program handles all user input safely without crashing or misbehaving.</p>                
+                    <ul>
+                        <li><strong>Language:</strong> C</li>
+                        <li><strong>Concepts:</strong> Pointers, Structs, Linked Lists, File I/O, Memory Management</li>
+                        <li><strong>Input Handling:</strong> Thorough input validation ensures safe handling of account numbers, names, and addresses. For example, invalid input is rejected and the user is re-prompted until valid input is received.</li>
+                        <li><strong>Structure:</strong>
+                            <ul>
+                                <li><strong>user_interface.c</strong>: Handles the user menu, input logic, and function calls</li>
+                                <li><strong>database.c</strong>: Implements core functions like <code>addRecord</code>, <code>findRecord</code>, <code>deleteRecord</code>, <code>printAllRecords</code>, <code>readfile</code>, and <code>writefile</code></li>
+                                <li><strong>record.h</strong>: Defines the structure for each record</li>
+                                <li><strong>database.h</strong>: Contains function prototypes shared across files</li>
+                            </ul>
+                        </li>
+                        <li><strong>Reliability:</strong> All core features were tested successfully. The program reads and writes data in the correct format and maintains memory integrity by cleaning up all dynamically allocated memory on exit.</li>
+                    </ul>
+                
+                    <p><strong>Click to view code files:</strong></p>
+                
+                    <div>
+                        <button onclick="loadCode('database.c')">database.c</button>
+                        <pre id="code-database.c" class="code-block" style="display: none;"></pre>
+                
+                        <button onclick="loadCode('user_interface.c')">user_interface.c</button>
+                        <pre id="code-user_interface.c" class="code-block" style="display: none;"></pre>
+                
+                        <button onclick="loadCode('database.h')">database.h</button>
+                        <pre id="code-database.h" class="code-block" style="display: none;"></pre>
+                
+                        <button onclick="loadCode('record.h')">record.h</button>
+                        <pre id="code-record.h" class="code-block" style="display: none;"></pre>
+
+                        <button onclick="loadCode('summary.txt')">summary.txt</button>
+                        <pre id="code-summary.txt" class="code-block" style="display: none;"></pre>
+
                     </div>
                 </div>
             </div>
