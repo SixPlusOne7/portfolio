@@ -273,11 +273,14 @@ footer {
     padding: 1rem;
     margin-top: 1rem;
     border-radius: 8px;
-    overflow-x: auto;
-    white-space: pre-wrap;
+    overflow-x: auto;          /* Enable horizontal scroll */
+    overflow-y: auto;          /* Optional: vertical scroll */
+    white-space: pre;          /* Prevent wrapping */
     font-family: 'Courier New', monospace;
+    font-size: 0.75rem;        /* Smaller font size */
     max-height: 400px;
 }
+
 button {
     background-color: #7B5D9A;
     color: white;
