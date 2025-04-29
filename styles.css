@@ -1,14 +1,14 @@
 /* Traditional Chinese Pastel Color Palette */
 :root {
     --qing: #E0F2F1;      /* 青 (light cyan) */
-    --fen: #283F3E;       /* 粉 (light pink) */
-    --huang: #E9A182;     /* 黄 (light yellow) */
-    --danqing: #824E40;   /* 淡青 (pale blue) */
-    --danzi: #DFBE96;     /* 淡紫 (pale purple) */
+    --fen: #F8BBD0;       /* 粉 (light pink) */
+    --huang: #FFF9C4;     /* 黄 (light yellow) */
+    --danqing: #B3E5FC;   /* 淡青 (pale blue) */
+    --danzi: #D1C4E9;     /* 淡紫 (pale purple) */
     --text-dark: #333333;
     --text-light: #f5f5f5;
     --shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
+} 
 
 body {
     font-family: 'Noto Sans SC', sans-serif;
