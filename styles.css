@@ -260,28 +260,31 @@ footer {
     object-fit: contain;
 }
 
-.close-btn {
-  position: fixed; /* stays in place regardless of image movement */
-  top: 20px;
-  right: 20px;
-  z-index: 9999; /* very high so it’s above the zoomed image */
-  background: rgba(0,0,0,0.5); /* optional: dark background for visibility */
-  color: white;
-  border: none;
-  font-size: 28px;
+/* --- KEEP CLOSE (X) ABOVE EVERYTHING --- */
+.close {
+  position: fixed;                           /* stick to viewport */
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  z-index: 10000;                            /* higher than modal content */
+  background: rgba(0,0,0,0.5);               /* optional for contrast */
+  color: #fff;
+  font-size: 32px;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
   cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 4px;
+  user-select: none;
+  pointer-events: auto;                      /* ensure it’s clickable */
 }
 
-.close-btn:hover {
-  background: rgba(0,0,0,0.8);
+/* Make sure the zooming image is below the X */
+.modal-content {
+  position: relative;
+  z-index: 1;
 }
 
-
-.close:hover {
-    color: var(--fen);
-}
+/* If you don’t use .close-btn in your HTML, neutralize it */
+.close-btn { display: none !important; }
 
 /* For videos in lightbox */
 .modal-video {
@@ -339,28 +342,25 @@ button:hover {
   transform-origin: var(--kb-origin, 50% 50%);
 }
 
-/* The modal image animates only when JS adds .kenburns.
-   JS adds .kenburns ONLY if the clicked thumbnail had .art-zoom. */
-.modal-content.kenburns {
-  animation: kb-zoom-pan 70s ease-in-out infinite alternate; /* slow loop */
-}
-
-/* One keyframes definition only */
+/* Smooth, looping Ken Burns tour */
 @keyframes kb-zoom-pan {
-  0%   { transform: scale(1) translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
-  50%  { transform: scale(1.9) translate(var(--kb-x2,  3%), var(--kb-y2,  3%)); }
-  100% { transform: scale(1) translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
-}
+  /* start == end for seamless loop */
+  0%, 100% { transform: scale(1)   translate(-5%, -5%); }
 
-/* Ken Burns animation with multiple pans */
-@keyframes kb-zoom-pan {
-  0%   { transform: scale(1) translate(-5%, -5%); }
-  25%  { transform: scale(1.4) translate(5%, -3%); }
-  50%  { transform: scale(1.9) translate(3%, 5%); }
-  75%  { transform: scale(1.4) translate(-4%, 3%); }
-  100% { transform: scale(1) translate(-5%, -5%); }
+  /* ease into zoom */
+  20%      { transform: scale(1.4) translate( 0%, -2%); }
+
+  /* fully zoomed, pan to top-right */
+  40%      { transform: scale(1.9) translate( 3%,  3%); }
+
+  /* hold zoom, drift to bottom-left */
+  60%      { transform: scale(1.9) translate(-4%,  4%); }
+
+  /* start zooming out while drifting back */
+  80%      { transform: scale(1.4) translate( 2%, -1%); }
 }
 
 .modal-content.kenburns {
-  animation: kb-zoom-pan 60s ease-in-out infinite;
+  animation: kb-zoom-pan 60s linear infinite;
 }
+
