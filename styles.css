@@ -351,7 +351,7 @@ button:hover {
     
   /* big zoom-in centered */
   20% { 
-    transform: scale(1.9) translate(0%, 0%); 
+    transform: scale(1.2) translate(0%, 0%); 
   }
     
   /* slight zoom-out + pan upward */
@@ -396,12 +396,12 @@ button:hover {
 
   /* hold */
   75% { 
-    transform: scale(1.9) translate(-6%, -6%); 
+    transform: scale(1.4) translate(-6%, -6%); 
   }
 
   /* zoom-out while drifting back to center-up */
   80% { 
-    transform: scale(1.4) translate(0%, -5%); 
+    transform: scale(1.2) translate(0%, -5%); 
   }
 }
 
