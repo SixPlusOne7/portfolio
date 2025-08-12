@@ -337,7 +337,7 @@ button:hover {
 
 @keyframes kb-zoom-pan {
   0%   { transform: scale(1) translate(0, 0); }
-  40%  { transform: scale(4.5) translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
-  85%  { transform: scale(4.5) translate(var(--kb-x2,  3%), var(--kb-y2,  3%)); }
+  40%  { transform: scale(4) translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
+  85%  { transform: scale(4) translate(var(--kb-x2,  3%), var(--kb-y2,  3%)); }
   100% { transform: scale(1) translate(0, 0); }
 }
