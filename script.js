@@ -99,15 +99,18 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.classList.add('show');
 
             // --- Ken Burns animation setup ---
-            const origin = this.dataset.origin || '50% 50%';
-            modalContent.style.setProperty('--kb-origin', origin);
-            modalContent.style.setProperty('--kb-x1', this.dataset.kbx1 || '-3%');
-            modalContent.style.setProperty('--kb-y1', this.dataset.kby1 || '-3%');
-            modalContent.style.setProperty('--kb-x2', this.dataset.kbx2 || '3%');
-            modalContent.style.setProperty('--kb-y2', this.dataset.kby2 || '3%');
             modalContent.classList.remove('kenburns');
-            void modalContent.offsetWidth; // restart animation
-            modalContent.classList.add('kenburns');
+            
+            if (this.classList.contains('art-zoom')) {
+                const origin = this.dataset.origin || '50% 50%';
+                modalContent.style.setProperty('--kb-origin', origin);
+                modalContent.style.setProperty('--kb-x1', this.dataset.kbx1 || '-3%');
+                modalContent.style.setProperty('--kb-y1', this.dataset.kby1 || '-3%');
+                modalContent.style.setProperty('--kb-x2', this.dataset.kbx2 || '3%');
+                modalContent.style.setProperty('--kb-y2', this.dataset.kby2 || '3%');
+                void modalContent.offsetWidth; // restart animation
+                modalContent.classList.add('kenburns');
+            }
             // --- end Ken Burns ---
 
             // Music playback if tagged
