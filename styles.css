@@ -350,13 +350,13 @@ button:hover {
   }
     
   /* big zoom-in centered */
-  20% { 
-    transform: scale(1.2) translate(0%, 0%); 
+  10% { 
+    transform: scale(1.4) translate(0%, 0%); 
   }
     
   /* slight zoom-out + pan upward */
   25% { 
-    transform: scale(1.4) translate(0%, -7%); 
+    transform: scale(1.5) translate(0%, -7%); 
   }
     
   /* zoom-in while drifting right-up */
@@ -366,42 +366,42 @@ button:hover {
     
   /* zoom-out while drifting right-down */
   40% { 
-    transform: scale(1.8) translate(5%, 5%); 
+    transform: scale(1.7) translate(5%, 5%); 
   }
 
   /* zoom-in while focusing left-down */
   45% { 
-    transform: scale(1.6) translate(-13%, 7%); 
+    transform: scale(1.8) translate(-13%, 7%); 
   }
 
   /* zoom-out while focusing left-up */
   50% { 
-    transform: scale(1.4) translate(-10%, -5%); 
+    transform: scale(1.7) translate(-10%, -5%); 
   }
 
   /* zoom-in centered but slightly up */
   60% { 
-    transform: scale(1.2) translate(0%, -7%); 
+    transform: scale(1.6) translate(0%, -7%); 
   }
 
   /* zoom-out same position */
   65% { 
-    transform: scale(1.4) translate(0%, -7%); 
+    transform: scale(1.5) translate(0%, -7%); 
   }
 
   /* zoom-in focus left-top */
   70% { 
-    transform: scale(1.6) translate(-10%, -10%); 
+    transform: scale(1.4) translate(-10%, -10%); 
   }
 
   /* hold */
   75% { 
-    transform: scale(1.8) translate(-10%, -10%); 
+    transform: scale(1.5) translate(-10%, -10%); 
   }
 
   /* zoom-out while drifting back to center-up */
   96% { 
-    transform: scale(1.2) translate(0%, -10%); 
+    transform: scale(1.0) translate(0%, -10%); 
   }
 }
 
