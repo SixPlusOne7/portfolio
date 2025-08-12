@@ -342,68 +342,49 @@ button:hover {
   transform-origin: var(--kb-origin, 50% 50%);
 }
 
-/* Smooth, looping Ken Burns tour with more varied translations */
-@keyframes kb-zoom-pan {
-  /* wait still for the first 5% */
-  0%, 1%, 100% { 
-    transform: scale(1) translate(0%, 0%); 
-  }
-    
-  /* big zoom-in centered */
-  10% { 
-    transform: scale(1.6) translate(0%, 0%); 
-  }
-    
-  /* slight zoom-out + pan upward */
-  25% { 
-    transform: scale(1.65) translate(0%, -7%); 
-  }
-    
-  /* zoom-in while drifting right-up */
-  35% { 
-    transform: scale(1.7) translate(7%, -7%); 
-  }
-    
-  /* zoom-out while drifting right-down */
-  40% { 
-    transform: scale(1.75) translate(5%, 5%); 
-  }
-
-  /* zoom-in while focusing left-down */
-  45% { 
-    transform: scale(1.8) translate(-13%, 7%); 
-  }
-
-  /* zoom-out while focusing left-up */
-  50% { 
-    transform: scale(1.85) translate(-10%, -5%); 
-  }
-
-  /* zoom-in centered but slightly up */
-  60% { 
-    transform: scale(1.8) translate(0%, -7%); 
-  }
-
-  /* zoom-out same position */
-  65% { 
-    transform: scale(1.75) translate(0%, -7%); 
-  }
-
-  /* zoom-in focus left-top */
-  70% { 
-    transform: scale(1.7) translate(-10%, -10%); 
-  }
-
-  /* hold */
-  75% { 
-    transform: scale(1.75) translate(-10%, -10%); 
-  }
-
-  /* zoom-out while drifting back to center-up */
-  96% { 
-    transform: scale(1.0) translate(0%, -10%); 
-  }
+/* Ken Burns that steps on a 16-beat grid. Duration set from --kb-dur */
+.modal-content.kenburns {
+  animation: kb-zoom-pan var(--kb-dur, 16s) linear infinite;
+  transform-origin: center center; /* change to 'left center' if you like */
 }
+
+/* 16 beats => each beat = 6.25% of the animation timeline */
+@keyframes kb-zoom-pan {
+  /* Beat 1: hold intro */
+  0%, 6.25%   { transform: scale(1.00) translate(0%, 0%); }
+
+  /* Beat 2: zoom in center */
+  12.5%       { transform: scale(1.60) translate(0%, 0%); }
+
+  /* Beat 4: up */
+  25%         { transform: scale(1.65) translate(0%, -7%); }
+
+  /* Beat 6: right-up */
+  37.5%       { transform: scale(1.70) translate(7%, -7%); }
+
+  /* Beat 7: right-down */
+  43.75%      { transform: scale(1.75) translate(5%, 5%); }
+
+  /* Beat 8: left-down (big swing) */
+  50%         { transform: scale(1.80) translate(-13%, 7%); }
+
+  /* Beat 9: left-up (accent) */
+  56.25%      { transform: scale(1.85) translate(-10%, -5%); }
+
+  /* Beat 11: center-up */
+  68.75%      { transform: scale(1.80) translate(0%, -7%); }
+
+  /* Beat 12: slight out, hold */
+  75%         { transform: scale(1.75) translate(0%, -7%); }
+
+  /* Beat 13–14: hold left-top */
+  81.25%,
+  87.5%       { transform: scale(1.70) translate(-10%, -10%); }
+
+  /* Beat 16: reset */
+  100%        { transform: scale(1.00) translate(0%, 0%); }
+}
+
 
 .modal-content.kenburns {
   animation: kb-zoom-pan 90s linear infinite;
