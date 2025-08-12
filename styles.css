@@ -332,7 +332,7 @@ button:hover {
 }
 
 .kenburns {
-  animation: kb-zoom-pan 18s ease-in-out forwards;
+  animation: kb-zoom-pan 18s ease-in-out infinite alternate;
 }
 
 @keyframes kb-zoom-pan {
