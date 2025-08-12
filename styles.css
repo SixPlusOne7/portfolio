@@ -319,4 +319,20 @@ button:hover {
     text-decoration: underline; /* underline on hover for clarity */
 }
 
+/* Ken Burns for modal image */
+.modal .modal-content {
+  will-change: transform;
+  transform-origin: var(--kb-origin, 50% 50%);
+}
+
+.kenburns {
+  animation: kb-zoom-pan 18s ease-in-out forwards;
+}
+
+@keyframes kb-zoom-pan {
+  0%   { transform: scale(1) translate(0, 0); }
+  40%  { transform: scale(1.12) translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
+  85%  { transform: scale(1.12) translate(var(--kb-x2, 3%), var(--kb-y2, 3%)); }
+  100% { transform: scale(1) translate(0, 0); }
+}
 
