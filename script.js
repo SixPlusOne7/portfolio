@@ -46,9 +46,8 @@ projectCards.forEach(card => {
     observer.observe(card);
 });
 
-// Image/video enlargement + per-image audio
+// Image/video enlargement + per-image audio + Ken Burns animation
 document.addEventListener('DOMContentLoaded', function() {
-    // Create modal elements
     const modal = document.createElement('div');
     modal.className = 'modal';
     
@@ -63,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
 
-    // Reused hidden audio element
     const music = document.getElementById('imageMusic');
 
     function stopMusic(reset = false) {
@@ -74,12 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function playTrack(src) {
         if (!music) return;
-        // If same track, restart; if different, swap then play
         if (music.src && music.src.endsWith(src)) {
-            try {
-                music.currentTime = 0;
-                music.play();
-            } catch (e) { console.warn('Unable to play audio:', e); }
+            try { music.currentTime = 0; music.play(); } 
+            catch (e) { console.warn('Unable to play audio:', e); }
             return;
         }
         try {
@@ -91,32 +86,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Handle image clicks (show modal; optionally play per-image audio)
+    // Handle image clicks
     document.querySelectorAll('.media img').forEach(img => {
         img.style.cursor = 'pointer';
         img.addEventListener('click', function() {
-            // If modal currently shows a video, clear it
             const existingVideo = modal.querySelector('video');
             if (existingVideo) existingVideo.remove();
 
-            // Show image in modal
             modalContent.src = this.src;
             modalContent.alt = this.alt || '';
             modal.appendChild(modalContent);
             modal.classList.add('show');
 
-            // ONLY play if image is tagged
-            const track = this.dataset.audio;   // reads data-audio
+            // --- Ken Burns animation setup ---
+            const origin = this.dataset.origin || '50% 50%';
+            modalContent.style.setProperty('--kb-origin', origin);
+            modalContent.style.setProperty('--kb-x1', this.dataset.kbx1 || '-3%');
+            modalContent.style.setProperty('--kb-y1', this.dataset.kby1 || '-3%');
+            modalContent.style.setProperty('--kb-x2', this.dataset.kbx2 || '3%');
+            modalContent.style.setProperty('--kb-y2', this.dataset.kby2 || '3%');
+            modalContent.classList.remove('kenburns');
+            void modalContent.offsetWidth; // restart animation
+            modalContent.classList.add('kenburns');
+            // --- end Ken Burns ---
+
+            // Music playback if tagged
+            const track = this.dataset.audio;
             if (this.classList.contains('music-trigger') && track) {
                 playTrack(track);
             } else {
-                // Ensure no music for non-tagged images
                 stopMusic(true);
             }
         });
     });
 
-    // Handle video clicks (pause music; show video in modal)
+    // Handle video clicks
     document.querySelectorAll('.media video').forEach(video => {
         video.style.cursor = 'pointer';
         video.addEventListener('click', function() {
@@ -143,27 +147,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Close modal: X
-    closeBtn.addEventListener('click', function() {
+    // Close modal
+    function closeModal() {
         modal.classList.remove('show');
+        modalContent.classList.remove('kenburns');
         stopMusic();
-    });
+    }
 
-    // Close modal: click backdrop
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.classList.remove('show');
-            stopMusic();
-        }
-    });
-
-    // Close modal: ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('show')) {
-            modal.classList.remove('show');
-            stopMusic();
-        }
-    });
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && modal.classList.contains('show')) closeModal(); });
 });
 
 function loadCode(filename) {
