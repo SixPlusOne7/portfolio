@@ -342,43 +342,66 @@ button:hover {
   transform-origin: var(--kb-origin, 50% 50%);
 }
 
-/* Smooth, looping Ken Burns tour */
+/* Smooth, looping Ken Burns tour with more varied translations */
 @keyframes kb-zoom-pan {
-  /* start == end for seamless loop */
+  /* wait still for the first 5% */
   0%, 5%, 100% { 
     transform: scale(1) translate(0%, 0%); 
   }
     
-  /* ease into zoom */
-  10% { 
-    transform: scale(1.4) translate(0%, 0%); 
+  /* big zoom-in centered */
+  20% { 
+    transform: scale(1.9) translate(0%, 0%); 
   }
     
+  /* slight zoom-out + pan upward */
   25% { 
-    transform: scale(1.4) translate(0%, -3%); 
+    transform: scale(1.4) translate(0%, -5%); 
   }
     
+  /* zoom-in while drifting right-up */
   35% { 
-    transform: scale(1.4) translate(3%, -3%); 
+    transform: scale(1.9) translate(5%, -5%); 
   }
     
+  /* zoom-out while drifting right-down */
+  40% { 
+    transform: scale(1.4) translate(5%, 5%); 
+  }
+
+  /* zoom-in while focusing left-down */
+  45% { 
+    transform: scale(1.9) translate(-8%, 5%); 
+  }
+
+  /* zoom-out while focusing left-up */
   50% { 
-    transform: scale(1.4) translate(3%, 3%); 
+    transform: scale(1.4) translate(-8%, -5%); 
   }
 
-  /* fully zoomed, pan to top-right */
+  /* zoom-in centered but slightly up */
+  60% { 
+    transform: scale(1.9) translate(0%, -5%); 
+  }
+
+  /* zoom-out same position */
   65% { 
-    transform: scale(1.9) translate(-3%, 3%); 
+    transform: scale(1.4) translate(0%, -5%); 
   }
 
-  /* hold zoom, drift to bottom-left */
+  /* zoom-in focus left-top */
+  70% { 
+    transform: scale(1.9) translate(-6%, -6%); 
+  }
+
+  /* hold */
+  75% { 
+    transform: scale(1.9) translate(-6%, -6%); 
+  }
+
+  /* zoom-out while drifting back to center-up */
   80% { 
-    transform: scale(1.9) translate(-3%, -3%); 
-  }
-
-  /* hold zoom, drift to bottom-left */
-  95% { 
-    transform: scale(1.9) translate(0%, -3%); 
+    transform: scale(1.4) translate(0%, -5%); 
   }
 }
 
