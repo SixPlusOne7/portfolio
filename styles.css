@@ -325,33 +325,21 @@ button:hover {
     text-decoration: underline; /* underline on hover for clarity */
 }
 
-/* Ken Burns for modal image */
+/* Ken Burns animation for the modal image */
 .modal .modal-content {
   will-change: transform;
   transform-origin: var(--kb-origin, 50% 50%);
 }
 
-.art-zoom.kenburns {
-  animation: kb-zoom-pan 70s ease-in-out infinite alternate;
+/* The modal image animates only when JS adds .kenburns.
+   JS adds .kenburns ONLY if the clicked thumbnail had .art-zoom. */
+.modal-content.kenburns {
+  animation: kb-zoom-pan 70s ease-in-out infinite alternate; /* slow loop */
 }
 
+/* One keyframes definition only */
 @keyframes kb-zoom-pan {
-  0%   { transform: scale(1) translate(0, 0); }
-  40%  { transform: scale(1.9) translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
-  85%  { transform: scale(1.9) translate(var(--kb-x2,  3%), var(--kb-y2,  3%)); }
-  100% { transform: scale(1) translate(0, 0); }
-}
-
-.kenburns {
-  animation: kb-zoom-pan 45s ease-in-out infinite alternate; /* 45s slow loop */
-  transform-origin: var(--kb-origin, 50% 50%);
-}
-
-@keyframes kb-zoom-pan {
-  0% {
-    transform: scale(1) translate(var(--kb-x1, -3%), var(--kb-y1, -3%));
-  }
-  100% {
-    transform: scale(1.8) translate(var(--kb-x2, 3%), var(--kb-y2, 3%)); /* zoom in closer */
-  }
+  0%   { transform: scale(1) translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
+  50%  { transform: scale(1.9) translate(var(--kb-x2,  3%), var(--kb-y2,  3%)); }
+  100% { transform: scale(1) translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
 }
