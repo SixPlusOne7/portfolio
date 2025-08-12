@@ -345,7 +345,7 @@ button:hover {
 /* Smooth, looping Ken Burns tour with more varied translations */
 @keyframes kb-zoom-pan {
   /* wait still for the first 5% */
-  0%, 5%, 100% { 
+  0%, 2%, 100% { 
     transform: scale(1) translate(0%, 0%); 
   }
     
@@ -366,7 +366,7 @@ button:hover {
     
   /* zoom-out while drifting right-down */
   40% { 
-    transform: scale(1.4) translate(7%, 7%); 
+    transform: scale(1.4) translate(5%, 5%); 
   }
 
   /* zoom-in while focusing left-down */
@@ -376,7 +376,7 @@ button:hover {
 
   /* zoom-out while focusing left-up */
   50% { 
-    transform: scale(1.4) translate(-13%, -7%); 
+    transform: scale(1.4) translate(-10%, -5%); 
   }
 
   /* zoom-in centered but slightly up */
@@ -391,16 +391,16 @@ button:hover {
 
   /* zoom-in focus left-top */
   70% { 
-    transform: scale(1.9) translate(-13%, -13%); 
+    transform: scale(1.9) translate(-10%, -10%); 
   }
 
   /* hold */
   75% { 
-    transform: scale(1.4) translate(-13%, -13%); 
+    transform: scale(1.4) translate(-10%, -10%); 
   }
 
   /* zoom-out while drifting back to center-up */
-  80% { 
+  90% { 
     transform: scale(1.2) translate(0%, -7%); 
   }
 }
