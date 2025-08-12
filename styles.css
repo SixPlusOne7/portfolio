@@ -342,61 +342,20 @@ button:hover {
   transform-origin: var(--kb-origin, 50% 50%);
 }
 
-/* Beat-synced Ken Burns; duration comes from --kb-dur */
+/* Continuous, phrase-level pan/zoom (no per-beat anchors) */
 .modal-content.kenburns {
-  animation: kb-zoom-pan var(--kb-dur, 16s) linear infinite;
+  /* keep using --kb-dur from JS so it's still tempo-synced by duration */
+  animation: kb-zoom-pan var(--kb-dur, 64s) ease-in-out infinite alternate;
   animation-delay: var(--kb-delay, 0s);
-  transform-origin: var(--kb-origin, center center);
 }
 
-/* Smooth, slow Ken Burns on beat: no micro-steps, seamless loop */
+/* Start pose -> End pose; browser eases between them */
 @keyframes kb-zoom-pan {
-  /* Beat 1–8 (e.g., 0%→12.5%): hold/start pose */
-  0%, 12.5% {
-    transform: scale(1.40) translate(3%, -3%);
-    animation-timing-function: cubic-bezier(.4,0,.2,1); /* ease for next segment */
+  0% {
+    transform: scale(1.22) translate(-4%, -4%);
   }
-
-  /* Beat 9–16 */
-  25% {
-    transform: scale(1.45) translate(-3%, -3%);
-    animation-timing-function: cubic-bezier(.4,0,.2,1);
-  }
-
-  /* Beat 17–24 */
-  37.5% {
-    transform: scale(1.50) translate(-3%, 3%);
-    animation-timing-function: cubic-bezier(.4,0,.2,1);
-  }
-
-  /* Beat 25–32 */
-  50% {
-    transform: scale(1.55) translate(3%, 3%);
-    animation-timing-function: cubic-bezier(.4,0,.2,1);
-  }
-
-  /* Beat 33–40 */
-  62.5% {
-    transform: scale(1.60) translate(3%, -3%);
-    animation-timing-function: cubic-bezier(.4,0,.2,1);
-  }
-
-  /* Beat 41–48 */
-  75% {
-    transform: scale(1.65) translate(-3%, -3%);
-    animation-timing-function: cubic-bezier(.4,0,.2,1);
-  }
-
-  /* Beat 49–56 */
-  87.5% {
-    transform: scale(1.70) translate(-3%, 3%);
-    animation-timing-function: cubic-bezier(.4,0,.2,1);
-  }
-
-  /* Beat 57–64: back to start pose (seamless loop) */
   100% {
-    transform: scale(1.40) translate(3%, -3%); /* SAME as 0% */
+    transform: scale(1.36) translate(5%, 5%);
   }
 }
-
 
