@@ -342,45 +342,45 @@ button:hover {
   transform-origin: var(--kb-origin, 50% 50%);
 }
 
-/* Ken Burns that steps on a 16-beat grid. Duration set from --kb-dur */
+/* Beat-synced Ken Burns; duration comes from --kb-dur */
 .modal-content.kenburns {
   animation: kb-zoom-pan var(--kb-dur, 16s) linear infinite;
-  transform-origin: center center; /* change to 'left center' if you like */
+  animation-delay: var(--kb-delay, 0s);
+  transform-origin: var(--kb-origin, center center);
 }
 
-/* 16 beats => each beat = 6.25% of the animation timeline */
+/* 16-beat grid (6.25% per beat). Smaller scales for gentler motion */
 @keyframes kb-zoom-pan {
-  /* Beat 1: hold intro */
-  0%, 6.25%   { transform: scale(1.00) translate(0%, 0%); }
+  /* Beat 1: hold */
+  0%, 6.25%    { transform: scale(1.00) translate(0%, 0%); }
 
-  /* Beat 2: zoom in center */
-  12.5%       { transform: scale(1.60) translate(0%, 0%); }
+  /* Beat 2: small zoom-in */
+  12.5%        { transform: scale(1.12) translate(0%, 0%); }
 
   /* Beat 4: up */
-  25%         { transform: scale(1.65) translate(0%, -7%); }
+  25%          { transform: scale(1.18) translate(0%, -5%); }
 
   /* Beat 6: right-up */
-  37.5%       { transform: scale(1.70) translate(7%, -7%); }
+  37.5%        { transform: scale(1.25) translate(6%, -6%); }
 
   /* Beat 7: right-down */
-  43.75%      { transform: scale(1.75) translate(5%, 5%); }
+  43.75%       { transform: scale(1.30) translate(4%, 4%); }
 
-  /* Beat 8: left-down (big swing) */
-  50%         { transform: scale(1.80) translate(-13%, 7%); }
+  /* Beat 8: left-down (bigger swing) */
+  50%          { transform: scale(1.35) translate(-10%, 6%); }
 
   /* Beat 9: left-up (accent) */
-  56.25%      { transform: scale(1.85) translate(-10%, -5%); }
+  56.25%       { transform: scale(1.38) translate(-8%, -4%); }
 
   /* Beat 11: center-up */
-  68.75%      { transform: scale(1.80) translate(0%, -7%); }
+  68.75%       { transform: scale(1.30) translate(0%, -6%); }
 
   /* Beat 12: slight out, hold */
-  75%         { transform: scale(1.75) translate(0%, -7%); }
+  75%          { transform: scale(1.25) translate(0%, -6%); }
 
   /* Beat 13–14: hold left-top */
-  81.25%,
-  87.5%       { transform: scale(1.70) translate(-10%, -10%); }
+  81.25%,87.5% { transform: scale(1.20) translate(-8%, -8%); }
 
   /* Beat 16: reset */
-  100%        { transform: scale(1.00) translate(0%, 0%); }
+  100%         { transform: scale(1.00) translate(0%, 0%); }
 }
