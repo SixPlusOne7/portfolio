@@ -113,7 +113,52 @@ document.addEventListener('DOMContentLoaded', function () {
         // BPM/beat-count → duration
         const bpm   = Number(this.dataset.bpm || 96);
         const beats = Number(this.dataset.beats || 16);
-        const loopSeconds = (60 * beats) / bpm;
+        // After you compute bpm/beats and set --kb-dur:
+        const beatSeconds = 60 / bpm;
+        
+        // Start music first (ensures we know the real start time)
+        const startAndSync = async () => {
+          try {
+            // force (re)load + start
+            music.currentTime = 0;
+            await music.play();
+        
+            // How far into the current beat are we?
+            const phase = music.currentTime % beatSeconds;
+        
+            // Nudge animation so its "0" aligns with the current beat edge
+            modalContent.style.setProperty('--kb-delay', `-${phase}s`);
+        
+            // restart the animation so delay applies now
+            modalContent.classList.remove('kenburns');
+            void modalContent.offsetWidth;
+            modalContent.classList.add('kenburns');
+          } catch (e) {
+            // fallback: no sync if autoplay fails
+            modalContent.style.setProperty('--kb-delay', '0s');
+            modalContent.classList.remove('kenburns');
+            void modalContent.offsetWidth;
+            modalContent.classList.add('kenburns');
+          }
+        };
+        
+        // If this image should play music + animate:
+        if (this.classList.contains('music-trigger') && track) {
+          // set duration before syncing
+          const bpm   = Number(this.dataset.bpm || 96);
+          const beats = Number(this.dataset.beats || 16);
+          const loopSeconds = (60 * beats) / bpm;
+          modalContent.style.setProperty('--kb-dur', `${loopSeconds}s`);
+        
+          await startAndSync();  // phase align to audio
+        } else {
+          // no music: no delay, just run animation if art-zoom
+          modalContent.style.setProperty('--kb-delay', '0s');
+          modalContent.classList.remove('kenburns');
+          void modalContent.offsetWidth;
+          modalContent.classList.add('kenburns');
+        }
+
         modalContent.style.setProperty('--kb-dur', `${loopSeconds}s`);
 
         // Optional per-image origin/path overrides
