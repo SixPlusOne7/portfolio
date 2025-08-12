@@ -349,46 +349,54 @@ button:hover {
   transform-origin: var(--kb-origin, center center);
 }
 
-/* Very slow Ken Burns — moves every 8 beats in a 64-beat loop */
+/* Smooth, slow Ken Burns on beat: no micro-steps, seamless loop */
 @keyframes kb-zoom-pan {
-  /* Beats 1–8: zoom in slightly, drift right-up */
+  /* Beat 1–8 (e.g., 0%→12.5%): hold/start pose */
   0%, 12.5% {
-    transform: scale(1.4) translate(3%, -3%);
+    transform: scale(1.40) translate(3%, -3%);
+    animation-timing-function: cubic-bezier(.4,0,.2,1); /* ease for next segment */
   }
 
-  /* Beats 9–16: zoom in more, drift left-up */
-  12.51%, 25% {
+  /* Beat 9–16 */
+  25% {
     transform: scale(1.45) translate(-3%, -3%);
+    animation-timing-function: cubic-bezier(.4,0,.2,1);
   }
 
-  /* Beats 17–24: drift left-down */
-  25.01%, 37.5% {
-    transform: scale(1.5) translate(-3%, 3%);
+  /* Beat 17–24 */
+  37.5% {
+    transform: scale(1.50) translate(-3%, 3%);
+    animation-timing-function: cubic-bezier(.4,0,.2,1);
   }
 
-  /* Beats 25–32: drift right-down */
-  37.51%, 50% {
+  /* Beat 25–32 */
+  50% {
     transform: scale(1.55) translate(3%, 3%);
+    animation-timing-function: cubic-bezier(.4,0,.2,1);
   }
 
-  /* Beats 33–40: drift back to right-up */
-  50.01%, 62.5% {
-    transform: scale(1.6) translate(3%, -3%);
+  /* Beat 33–40 */
+  62.5% {
+    transform: scale(1.60) translate(3%, -3%);
+    animation-timing-function: cubic-bezier(.4,0,.2,1);
   }
 
-  /* Beats 41–48: drift left-up again */
-  62.51%, 75% {
+  /* Beat 41–48 */
+  75% {
     transform: scale(1.65) translate(-3%, -3%);
+    animation-timing-function: cubic-bezier(.4,0,.2,1);
   }
 
-  /* Beats 49–56: drift left-down */
-  75.01%, 87.5% {
-    transform: scale(1.7) translate(-3%, 3%);
+  /* Beat 49–56 */
+  87.5% {
+    transform: scale(1.70) translate(-3%, 3%);
+    animation-timing-function: cubic-bezier(.4,0,.2,1);
   }
 
-  /* Beats 57–64: drift right-down, end */
-  87.51%, 100% {
-    transform: scale(1.75) translate(3%, 3%);
+  /* Beat 57–64: back to start pose (seamless loop) */
+  100% {
+    transform: scale(1.40) translate(3%, -3%); /* SAME as 0% */
   }
 }
+
 
