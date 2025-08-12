@@ -172,3 +172,14 @@ function loadCode(filename) {
         pre.style.display = 'none';
     }
 }
+
+.kenburns {
+  animation: kb-zoom-pan 18s ease-in-out infinite alternate;
+}
+
+@keyframes kb-zoom-pan {
+  0%   { transform: scale(1) translate(0, 0); }
+  40%  { transform: scale(1.6) translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
+  100% { transform: scale(1.6) translate(var(--kb-x2, 3%), var(--kb-y2, 3%)); }
+}
+
