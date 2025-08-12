@@ -260,16 +260,24 @@ footer {
     object-fit: contain;
 }
 
-.close {
-    position: absolute;
-    top: 20px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-    cursor: pointer;
+.close-btn {
+  position: fixed; /* stays in place regardless of image movement */
+  top: 20px;
+  right: 20px;
+  z-index: 9999; /* very high so it’s above the zoomed image */
+  background: rgba(0,0,0,0.5); /* optional: dark background for visibility */
+  color: white;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
 }
+
+.close-btn:hover {
+  background: rgba(0,0,0,0.8);
+}
+
 
 .close:hover {
     color: var(--fen);
