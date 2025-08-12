@@ -297,4 +297,20 @@ button:hover {
     background-color: #9575CD;
 }
 
+.credits {
+    font-size: 0.8rem;       /* smaller than normal text */
+    color: #777;             /* lighter gray so it’s less distracting */
+    margin-top: 0.5rem;      /* small space above each credit */
+    line-height: 1.4;        /* readable spacing */
+}
+
+.credits a {
+    color: inherit;          /* match text color */
+    text-decoration: none;   /* no underline by default */
+}
+
+.credits a:hover {
+    text-decoration: underline; /* underline on hover for clarity */
+}
+
 
