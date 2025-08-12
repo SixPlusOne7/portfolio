@@ -127,17 +127,16 @@ h3 {
   text-align: center;
 }
 
-/* STOP stretching everything */
 .project-card img {
   height: auto;
   border-radius: 8px;
-  /* remove width:100%; */
+  cursor: pointer;
 }
 
-/* Thumbnails in the gallery row */
+/* Keep media thumbnails small */
 .project-card .media img,
 .project-card .media video {
-  width: 320px;       /* or 360px */
+  width: 320px; /* adjust as needed */
   height: auto;
   object-fit: cover;
   border-radius: 8px;
@@ -312,7 +311,7 @@ button:hover {
 
 .credits {
     font-size: 0.8rem;       /* smaller than normal text */
-    color: #777;             /* lighter gray so it’s less distracting */
+    color: #777;             /* lighter gray so itâ€™s less distracting */
     margin-top: 0.5rem;      /* small space above each credit */
     line-height: 1.4;        /* readable spacing */
 }
@@ -342,4 +341,3 @@ button:hover {
   85%  { transform: scale(1.6) translate(var(--kb-x2,  3%), var(--kb-y2,  3%)); }
   100% { transform: scale(1) translate(0, 0); }
 }
-
