@@ -331,7 +331,7 @@ button:hover {
   transform-origin: var(--kb-origin, 50% 50%);
 }
 
-.kenburns {
+.art-zoom.kenburns {
   animation: kb-zoom-pan 70s ease-in-out infinite alternate;
 }
 
