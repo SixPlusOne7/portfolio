@@ -354,5 +354,5 @@ button:hover {
 }
 
 .modal-content.kenburns {
-  animation: kb-zoom-pan 40s ease-in-out forwards; /* forward so it ends zoomed out */
+  animation: kb-zoom-pan 40s ease-in-out infinite;
 }
