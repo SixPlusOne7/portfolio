@@ -349,13 +349,26 @@ button:hover {
   transform-origin: var(--kb-origin, center center);
 }
 
+/* 16-beat loop; changes on strong beats only (every 2 beats) */
 @keyframes kb-zoom-pan {
-  0%, 6.25%   { transform: scale(1.00) translate(0%, 0%); }
-  12.5%       { transform: scale(1.06) translate(0%, 0%); }
-  25%         { transform: scale(1.08) translate(0%, -2%); }
-  37.5%       { transform: scale(1.10) translate(3%, -3%); }
-  50%         { transform: scale(1.12) translate(-4%, 3%); }
-  62.5%       { transform: scale(1.10) translate(0%, -3%); }
-  75%         { transform: scale(1.06) translate(-3%, -3%); }
-  100%        { transform: scale(1.00) translate(0%, 0%); }
+  /* Beats 1–2: hold */
+  0%, 12.5%   { transform: scale(1.00) translate(0%, 0%); }
+
+  /* Beats 3–4: small zoom-in */
+  25%         { transform: scale(1.10) translate(0%, -3%); }
+
+  /* Beats 5–6: drift right-up */
+  37.5%       { transform: scale(1.15) translate(4%, -4%); }
+
+  /* Beats 7–8: drift left-down */
+  50%         { transform: scale(1.18) translate(-6%, 4%); }
+
+  /* Beats 9–10: center-up */
+  62.5%       { transform: scale(1.14) translate(0%, -4%); }
+
+  /* Beats 11–12: gentle left-top */
+  75%         { transform: scale(1.12) translate(-4%, -4%); }
+
+  /* Beats 13–16: return and hold */
+  87.5%,100%  { transform: scale(1.00) translate(0%, 0%); }
 }
