@@ -127,12 +127,20 @@ h3 {
   text-align: center;
 }
 
+/* STOP stretching everything */
 .project-card img {
-  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  /* remove width:100%; */
+}
+
+/* Thumbnails in the gallery row */
+.project-card .media img,
+.project-card .media video {
+  width: 320px;       /* or 360px */
   height: auto;
   object-fit: cover;
   border-radius: 8px;
-  cursor: pointer;
 }
 
 .project-card small {
