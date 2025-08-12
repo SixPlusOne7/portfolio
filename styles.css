@@ -384,9 +384,3 @@ button:hover {
   /* Beat 16: reset */
   100%        { transform: scale(1.00) translate(0%, 0%); }
 }
-
-
-.modal-content.kenburns {
-  animation: kb-zoom-pan 90s linear infinite;
-}
-
