@@ -349,26 +349,46 @@ button:hover {
   transform-origin: var(--kb-origin, center center);
 }
 
-/* Smooth, slow Ken Burns with 8-beat moves in a 32-beat loop */
+/* Very slow Ken Burns — moves every 8 beats in a 64-beat loop */
 @keyframes kb-zoom-pan {
-  /* Beats 1–8: zoom in + drift right-up */
-  0%, 25% {
-    transform: scale(1.3) translate(5%, -5%);
+  /* Beats 1–8: zoom in slightly, drift right-up */
+  0%, 12.5% {
+    transform: scale(1.4) translate(3%, -3%);
   }
 
-  /* Beats 9–16: zoom in + drift left-up */
-  25.01%, 50% {
-    transform: scale(1.3) translate(-5%, -5%);
+  /* Beats 9–16: zoom in more, drift left-up */
+  12.51%, 25% {
+    transform: scale(1.45) translate(-3%, -3%);
   }
 
-  /* Beats 17–24: zoom in + drift left-down */
-  50.01%, 75% {
-    transform: scale(1.3) translate(-5%, 5%);
+  /* Beats 17–24: drift left-down */
+  25.01%, 37.5% {
+    transform: scale(1.5) translate(-3%, 3%);
   }
 
-  /* Beats 25–32: zoom in + drift right-down */
-  75.01%, 100% {
-    transform: scale(1.3) translate(5%, 5%);
+  /* Beats 25–32: drift right-down */
+  37.51%, 50% {
+    transform: scale(1.55) translate(3%, 3%);
+  }
+
+  /* Beats 33–40: drift back to right-up */
+  50.01%, 62.5% {
+    transform: scale(1.6) translate(3%, -3%);
+  }
+
+  /* Beats 41–48: drift left-up again */
+  62.51%, 75% {
+    transform: scale(1.65) translate(-3%, -3%);
+  }
+
+  /* Beats 49–56: drift left-down */
+  75.01%, 87.5% {
+    transform: scale(1.7) translate(-3%, 3%);
+  }
+
+  /* Beats 57–64: drift right-down, end */
+  87.51%, 100% {
+    transform: scale(1.75) translate(3%, 3%);
   }
 }
 
