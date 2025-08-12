@@ -345,7 +345,7 @@ button:hover {
 /* Smooth, looping Ken Burns tour with more varied translations */
 @keyframes kb-zoom-pan {
   /* wait still for the first 5% */
-  0%, 2%, 100% { 
+  0%, 1%, 100% { 
     transform: scale(1) translate(0%, 0%); 
   }
     
@@ -400,8 +400,8 @@ button:hover {
   }
 
   /* zoom-out while drifting back to center-up */
-  90% { 
-    transform: scale(1.2) translate(0%, -7%); 
+  96% { 
+    transform: scale(1.2) translate(0%, -10%); 
   }
 }
 
