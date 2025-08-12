@@ -345,28 +345,40 @@ button:hover {
 /* Smooth, looping Ken Burns tour */
 @keyframes kb-zoom-pan {
   /* start == end for seamless loop */
-  0%, 10%, 100% { 
+  0%, 5%, 100% { 
     transform: scale(1) translate(0%, 0%); 
   }
-
+    
   /* ease into zoom */
-  20% { 
-    transform: scale(1.4) translate(0%, -2%); 
+  10% { 
+    transform: scale(1.4) translate(0%, 0%); 
+  }
+    
+  25% { 
+    transform: scale(1.4) translate(0%, -3%); 
+  }
+    
+  35% { 
+    transform: scale(1.4) translate(3%, -3%); 
+  }
+    
+  50% { 
+    transform: scale(1.4) translate(3%, 3%); 
   }
 
   /* fully zoomed, pan to top-right */
-  40% { 
-    transform: scale(1.9) translate(3%, 3%); 
+  65% { 
+    transform: scale(1.9) translate(-3%, 3%); 
   }
 
   /* hold zoom, drift to bottom-left */
-  60% { 
-    transform: scale(1.9) translate(-4%, 4%); 
+  80% { 
+    transform: scale(1.9) translate(-3%, -3%); 
   }
 
-  /* start zooming out while drifting back */
-  80% { 
-    transform: scale(1.4) translate(2%, -1%); 
+  /* hold zoom, drift to bottom-left */
+  95% { 
+    transform: scale(1.9) translate(0%, -3%); 
   }
 }
 
