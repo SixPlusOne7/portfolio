@@ -346,7 +346,7 @@ button:hover {
 @keyframes kb-zoom-pan {
   /* start == end for seamless loop */
   0%, 10%, 100% { 
-    transform: scale(1) translate(-5%, 5%); 
+    transform: scale(1) translate(0%, 0%); 
   }
 
   /* ease into zoom */
