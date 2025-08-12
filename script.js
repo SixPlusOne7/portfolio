@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Set Ken Burns duration & optional path vars if needed
       if (isArtZoom) {
         const bpm   = Number(this.dataset.bpm || 96);
-        const beats = Number(this.dataset.beats || 32);
+        const beats = Number(this.dataset.beats || 64);
         const loopSeconds = (60 * beats) / bpm;
         modalContent.style.setProperty('--kb-dur', `${loopSeconds}s`);
         // gentler motion defaults; override via data-* if you want
