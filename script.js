@@ -92,13 +92,66 @@ document.addEventListener('DOMContentLoaded', function () {
   // Image click → open modal (animate only if .art-zoom)
   document.querySelectorAll('.media img').forEach(img => {
     img.style.cursor = 'pointer';
-    img.addEventListener('click', function () {
+    img.addEventListener('click', async function () {
       // If modal currently shows a video, clear it and restore img holder
       const existingVideo = modal.querySelector('video');
-      if (existingVideo) {
-        existingVideo.remove();
-        modal.appendChild(modalContent);
+      if (existingVideo) { existingVideo.remove(); modal.appendChild(modalContent); }
+  
+      // Show image
+      modalContent.src = this.src;
+      modalContent.alt = this.alt || '';
+      modal.classList.add('show');
+  
+      // Stop any prior animation
+      modalContent.classList.remove('kenburns');
+  
+      // If this image should animate, set duration & path vars now
+      const isArtZoom = this.classList.contains('art-zoom');
+      if (isArtZoom) {
+        const bpm   = Number(this.dataset.bpm || 96);
+        const beats = Number(this.dataset.beats || 16);
+        const loopSeconds = (60 * beats) / bpm;
+        modalContent.style.setProperty('--kb-dur', `${loopSeconds}s`);
+        modalContent.style.setProperty('--kb-origin', this.dataset.origin || '50% 50%');
+        modalContent.style.setProperty('--kb-x1', this.dataset.kbx1 || '-3%');
+        modalContent.style.setProperty('--kb-y1', this.dataset.kby1 || '-3%');
+        modalContent.style.setProperty('--kb-x2', this.dataset.kbx2 || '3%');
+        modalContent.style.setProperty('--kb-y2', this.dataset.kby2 || '3%');
       }
+  
+      // Music playback (only for .music-trigger)
+      const track = this.dataset.audio;
+      const isMusic = this.classList.contains('music-trigger') && track;
+  
+      if (isMusic) {
+        try {
+          // Prepare + start audio
+          music.src = track;
+          music.load();
+          music.currentTime = 0;
+          await music.play();                  // <-- wait until audio actually starts
+  
+          // Align animation start exactly to audio start (phase 0)
+          modalContent.style.setProperty('--kb-delay', '0s');
+        } catch (e) {
+          // If autoplay blocked, just run animation without delay
+          modalContent.style.setProperty('--kb-delay', '0s');
+        }
+      } else {
+        // No music: no delay
+        modalContent.style.setProperty('--kb-delay', '0s');
+        // Also ensure silence
+        stopMusic(true);
+      }
+  
+      // Finally start the animation if needed
+      if (isArtZoom) {
+        void modalContent.offsetWidth; // reflow to ensure fresh start
+        modalContent.classList.add('kenburns');
+      }
+    });
+  });
+
 
       // Show image
       modalContent.src = this.src;
