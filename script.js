@@ -121,4 +121,160 @@ document.addEventListener('DOMContentLoaded', function () {
 
     modalContent.classList.add('beat-walk');
     modalContent.style.transformOrigin = origin;
-    m
+    modalContent.style.transitionDuration = `${stepMs}ms`;
+
+    // Apply an initial pose
+    const [x0, y0] = pathPoints[0] || [0, 0];
+    modalContent.style.transform = `scale(${scale}) translate(${x0}%, ${y0}%)`;
+
+    // Tick every beat like a metronome
+    beatTimer = setInterval(() => {
+      beatIndex = (beatIndex + 1) % Math.max(beatsPerCycle, 1);
+      const [x, y] = pathPoints[beatIndex % pathPoints.length];
+      modalContent.style.transform = `scale(${scale}) translate(${x}%, ${y}%)`;
+    }, beatMs);
+  }
+
+  function stopBeatWalk() {
+    if (beatTimer) {
+      clearInterval(beatTimer);
+      beatTimer = null;
+    }
+  }
+
+  // Image click → open modal; animate &/or play audio based on classes/data-*
+  document.querySelectorAll('.media img').forEach(img => {
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', async function () {
+      // If modal currently shows a video, clear it and restore img holder
+      const existingVideo = modal.querySelector('video');
+      if (existingVideo) { existingVideo.remove(); modal.appendChild(modalContent); }
+
+      // Show image
+      modalContent.src = this.src;
+      modalContent.alt = this.alt || '';
+      modal.classList.add('show');
+      openModal();
+
+      // Reset animations
+      stopBeatWalk();
+      modalContent.classList.remove('kenburns', 'beat-walk');
+
+      const isArtZoom   = this.classList.contains('art-zoom');        // marks images that animate
+      const isMusic     = this.classList.contains('music-trigger') && this.dataset.audio;
+      const wantsDance  = this.classList.contains('dance-mode');      // use beat-walk if present
+
+      // Motion params
+      const bpm     = Number(this.dataset.bpm   || 96);
+      const beats   = Number(this.dataset.beats || 16);   // controls cycle length (metronome)
+      const origin  = this.dataset.origin || '50% 50%';
+      const scale   = Number(this.dataset.scale || 1.04); // tiny zoom
+
+      // Optional custom path: "x,y;x,y;x,y"
+      pathPoints = this.dataset.path ? parsePathAttr(this.dataset.path) : defaultPath(beats);
+      if (!pathPoints.length) pathPoints = defaultPath(beats);
+
+      // Also keep your older Ken Burns timing for non-dance images
+      const loopSeconds = (60 * beats) / bpm;
+      modalContent.style.setProperty('--kb-dur', `${loopSeconds}s`);
+      modalContent.style.setProperty('--kb-origin', origin);
+      modalContent.style.setProperty('--kb-x1', this.dataset.kbx1 || '-1.5%');
+      modalContent.style.setProperty('--kb-y1', this.dataset.kby1 || '-1.5%');
+      modalContent.style.setProperty('--kb-x2', this.dataset.kbx2 || '1.5%');
+      modalContent.style.setProperty('--kb-y2', this.dataset.kby2 || '1.5%');
+
+      // Start music first for alignment
+      if (isMusic) {
+        try {
+          music.src = this.dataset.audio;
+          music.load();
+          music.currentTime = 0;
+          await music.play();
+          modalContent.style.setProperty('--kb-delay', '0s');
+        } catch (_) {
+          modalContent.style.setProperty('--kb-delay', '0s');
+        }
+      } else {
+        stopMusic(true);
+        modalContent.style.setProperty('--kb-delay', '0s');
+      }
+
+      // Start animation
+      if (isArtZoom) {
+        if (wantsDance) {
+          // Beat-walk: one move per beat; data-beats controls cycle length
+          startBeatWalk({ bpm, beats, scale, origin });
+        } else {
+          // Legacy Ken Burns (jump between two poses over data-beats beats)
+          void modalContent.offsetWidth;  // reflow
+          modalContent.classList.add('kenburns');
+        }
+      }
+    });
+  });
+
+  // Video click → show video (pause music, no image animation)
+  document.querySelectorAll('.media video').forEach(video => {
+    video.style.cursor = 'pointer';
+    video.addEventListener('click', function () {
+      stopMusic(true);
+      stopBeatWalk();
+
+      const videoModal = document.createElement('video');
+      videoModal.className = 'modal-video';
+      videoModal.controls = true;
+
+      const sourceEl = this.querySelector('source');
+      if (sourceEl) {
+        const source = document.createElement('source');
+        source.src = sourceEl.src;
+        source.type = sourceEl.type || 'video/mp4';
+        videoModal.appendChild(source);
+      }
+
+      // Clear modal content (keep close button)
+      modal.innerHTML = '';
+      modal.appendChild(closeBtn);
+      modal.appendChild(videoModal);
+      modal.classList.add('show');
+      openModal();
+
+      try { videoModal.play(); } catch (_) {}
+    });
+  });
+
+  // --- Close modal helpers ---
+  function closeModal() {
+    _closeModalOnly();
+    stopMusic(); // pause audio too
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+  closeBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') closeModal();
+  });
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
+  });
+
+  // Expose for debugging if needed:
+  window.__modal = { modal, modalContent, closeBtn };
+});
+
+// Lazy code viewer
+function loadCode(filename) {
+  const pre = document.getElementById('code-' + filename);
+  if (pre.style.display === 'none') {
+    fetch('code/' + filename)
+      .then(res => res.text())
+      .then(data => {
+        pre.textContent = data;
+        pre.style.display = 'block';
+      });
+  } else {
+    pre.style.display = 'none';
+  }
+}
