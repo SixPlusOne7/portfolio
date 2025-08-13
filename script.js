@@ -1,27 +1,35 @@
+// ==============================
 // Smooth scrolling for navigation
+// ==============================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (!target) return;
     e.preventDefault();
-    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    target.scrollIntoView({ behavior: 'smooth' });
   });
 });
 
+// ==================================
 // Highlight active section in navbar
+// ==================================
 const sections = document.querySelectorAll('section');
 const navItems = document.querySelectorAll('#navbar a');
 
 window.addEventListener('scroll', () => {
   let current = '';
   sections.forEach(section => {
-    const sectionTop = section.offsetTop;
-    if (pageYOffset >= (sectionTop - 300)) current = section.getAttribute('id');
+    const top = section.offsetTop;
+    if (pageYOffset >= (top - 300)) current = section.getAttribute('id');
   });
   navItems.forEach(item => {
     item.classList.toggle('active', item.getAttribute('href') === `#${current}`);
   });
 });
 
-// Card intro animation
+// =======================
+// Card intro reveal anim.
+// =======================
 const projectCards = document.querySelectorAll('.project-card');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -39,9 +47,10 @@ projectCards.forEach(card => {
   observer.observe(card);
 });
 
-// ------------------------
-// Modal + per-image audio + beat-synced Ken Burns (continuous, no per-beat jumps)
-// ------------------------
+// ======================================================
+// Modal + per-image audio + beat-synced Ken Burns glide
+// + subtle on-beat pulse (no jumpy keyframes)
+// ======================================================
 document.addEventListener('DOMContentLoaded', function () {
   // Build modal once
   const modal = document.createElement('div');
@@ -50,96 +59,111 @@ document.addEventListener('DOMContentLoaded', function () {
   const modalContent = document.createElement('img');
   modalContent.className = 'modal-content';
 
+  // Wrapper to carry the on-beat pulse (glide stays on the <img>)
+  const beatWrap = document.createElement('div');
+  beatWrap.className = 'kb-beat-wrap';
+  beatWrap.appendChild(modalContent);
+
   const closeBtn = document.createElement('span');
   closeBtn.className = 'close';
   closeBtn.innerHTML = '&times;';
-  // a11y for keyboard users
+  // a11y
   closeBtn.setAttribute('role', 'button');
   closeBtn.setAttribute('aria-label', 'Close image viewer');
   closeBtn.setAttribute('tabindex', '0');
 
   modal.appendChild(closeBtn);
-  modal.appendChild(modalContent);
+  modal.appendChild(beatWrap);
   document.body.appendChild(modal);
 
   // Prevent background scroll while modal is open
-  function openModal() { document.body.style.overflow = 'hidden'; }
-  function _closeModalOnly() {
-    modal.classList.remove('show');
-    modalContent.classList.remove('kenburns'); // stop animation
-    if (!modal.contains(modalContent)) modal.appendChild(modalContent);
-    document.body.style.overflow = ''; // restore
-  }
+  function lockScroll()   { document.body.style.overflow = 'hidden'; }
+  function unlockScroll() { document.body.style.overflow = ''; }
 
-  // Hidden reusable audio element (must exist in HTML)
+  // Hidden reusable audio element (must be in HTML)
   const music = document.getElementById('imageMusic');
 
   function stopMusic(reset = false) {
     if (!music) return;
     music.pause();
     if (reset) music.currentTime = 0;
+    beatWrap.classList.remove('beating'); // stop the pulse if audio stops
   }
 
-  // Image click → open modal (animate only if .art-zoom)
+  // -----------------------------
+  // Image click -> open modal
+  // -----------------------------
   document.querySelectorAll('.media img').forEach(img => {
     img.style.cursor = 'pointer';
     img.addEventListener('click', async function () {
-      // If modal currently shows a video, clear it and restore img holder
+      // If a video was open, restore the image wrapper
       const existingVideo = modal.querySelector('video');
-      if (existingVideo) { existingVideo.remove(); modal.appendChild(modalContent); }
+      if (existingVideo) {
+        existingVideo.remove();
+        if (!modal.contains(beatWrap)) modal.appendChild(beatWrap);
+      }
 
       // Show image
       modalContent.src = this.src;
       modalContent.alt = this.alt || '';
       modal.classList.add('show');
-      openModal();
+      lockScroll();
 
-      // Stop any prior animation
+      // Reset previous animation state
       modalContent.classList.remove('kenburns');
 
       // Determine behaviors
       const isArtZoom = this.classList.contains('art-zoom');
-      const track = this.dataset.audio;
-      const isMusic = this.classList.contains('music-trigger') && track;
+      const track     = this.dataset.audio;
+      const isMusic   = this.classList.contains('music-trigger') && track;
 
-      // --- Ken Burns duration from BPM × beats (slower = bigger beats) ---
+      // --- Ken Burns duration from BPM × beats (longer beats = slower) ---
       if (isArtZoom) {
-        const bpm   = Number(this.dataset.bpm || 96);      // per-image tempo (override in HTML)
-        const beats = Number(this.dataset.beats || 64);     // default to a slow 64-beat loop
+        const bpm   = Number(this.dataset.bpm || 96);   // per-image tempo
+        const beats = Number(this.dataset.beats || 64); // default slow phrase
         const loopSeconds = (60 * beats) / bpm;
         modalContent.style.setProperty('--kb-dur', `${loopSeconds}s`);
 
-        // Optional path/origin (safe defaults)
+        // Optional: origin override
         modalContent.style.setProperty('--kb-origin', this.dataset.origin || '50% 50%');
+
+        // Set the beat pulse duration on wrapper (ms per beat)
+        const beatMs = Math.round(60000 / bpm);
+        beatWrap.style.setProperty('--beat-dur', `${beatMs}ms`);
       }
 
-      // --- Start audio first, then animation (so they begin together) ---
+      // --- Start audio first, then animation so they begin together ---
       if (isMusic) {
         try {
           music.src = track;
           music.load();
           music.currentTime = 0;
-          await music.play(); // wait until audio actually starts
-          // align animation phase with audio start
+          await music.play();                           // ensure audio actually starts
           modalContent.style.setProperty('--kb-delay', '0s');
-        } catch (_) {
+          beatWrap.classList.add('beating');            // enable on-beat pulse
+        } catch {
+          // If autoplay blocked, still run the glide (no pulse)
           modalContent.style.setProperty('--kb-delay', '0s');
+          beatWrap.classList.remove('beating');
         }
       } else {
         // No music for this image
         stopMusic(true);
         modalContent.style.setProperty('--kb-delay', '0s');
+        beatWrap.classList.remove('beating');
       }
 
-      // Finally start the animation (continuous – no per-beat jumps)
+      // Start the continuous glide (no per-beat jumps)
       if (isArtZoom) {
-        void modalContent.offsetWidth; // reflow for clean restart
+        void modalContent.offsetWidth; // reflow to restart cleanly
         modalContent.classList.add('kenburns');
       }
     });
   });
 
-  // Video click → show video (pause music, no Ken Burns)
+  // -----------------------------
+  // Video click -> show video
+  // -----------------------------
   document.querySelectorAll('.media video').forEach(video => {
     video.style.cursor = 'pointer';
     video.addEventListener('click', function () {
@@ -157,21 +181,27 @@ document.addEventListener('DOMContentLoaded', function () {
         videoModal.appendChild(source);
       }
 
-      // Clear modal content (keep close button)
+      // Swap modal content to the video (keep close button)
       modal.innerHTML = '';
       modal.appendChild(closeBtn);
       modal.appendChild(videoModal);
       modal.classList.add('show');
-      openModal();
+      lockScroll();
 
-      try { videoModal.play(); } catch (_) {}
+      try { videoModal.play(); } catch {}
     });
   });
 
-  // --- Close modal helpers ---
+  // -----------------------------
+  // Close modal helpers
+  // -----------------------------
   function closeModal() {
-    _closeModalOnly();
+    modal.classList.remove('show');
+    modalContent.classList.remove('kenburns');
+    beatWrap.classList.remove('beating');
     stopMusic(); // pause audio too
+    if (!modal.contains(beatWrap)) modal.appendChild(beatWrap);
+    unlockScroll();
   }
 
   closeBtn.addEventListener('click', closeModal);
@@ -185,6 +215,24 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
   });
 
-  // Debug helper: inspect computed duration when you click
-  window.__kbDebug = (bpm, beats) => console.log('[KenBurns]', { bpm, beats, seconds: (60*beats)/bpm });
+  // Optional debug in console:
+  window.__kbDebug = (bpm, beats) =>
+    console.log('[KenBurns]', { bpm, beats, seconds: (60 * beats) / bpm });
 });
+
+// ==========================
+// Lazy code viewer (optional)
+// ==========================
+function loadCode(filename) {
+  const pre = document.getElementById('code-' + filename);
+  if (pre.style.display === 'none') {
+    fetch('code/' + filename)
+      .then(res => res.text())
+      .then(data => {
+        pre.textContent = data;
+        pre.style.display = 'block';
+      });
+  } else {
+    pre.style.display = 'none';
+  }
+}
