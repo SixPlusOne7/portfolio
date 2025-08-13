@@ -8,7 +8,7 @@
     --text-dark: #333333;
     --text-light: #f5f5f5;
     --shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
+} 
 
 body {
     font-family: 'Noto Sans SC', sans-serif;
@@ -78,7 +78,11 @@ h3 { font-size: 1.5rem; margin-bottom: 1rem; color: #7B5D9A; }
 
 .highlight { color: #7B5D9A; font-weight: 700; }
 
-.projects-grid { display: flex; flex-direction: column; gap: 24px; }
+.projects-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
 
 .project-card {
   background: #fff;
@@ -180,8 +184,10 @@ footer {
     display: none;
     position: fixed;
     z-index: 2000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
     overflow: auto;
     opacity: 0;
@@ -200,6 +206,7 @@ footer {
     max-height: 90%;
     object-fit: contain;
     will-change: transform;
+    transform-origin: var(--kb-origin, 50% 50%);
 }
 
 .close {
@@ -226,16 +233,11 @@ footer {
     max-height: 80vh;
 }
 
-/* ----------------------------
-   Ken Burns jump on beat (existing)
------------------------------ */
-.modal .modal-content { transform-origin: var(--kb-origin, 50% 50%); }
-
+/* ---------- Existing Ken Burns (kept for non-dance images) ---------- */
 .modal-content.kenburns,
 .kenburns {
   animation: kb-jump var(--kb-dur, 2s) steps(1, end) infinite alternate;
   animation-delay: var(--kb-delay, 0s);
-  transform-origin: var(--kb-origin, 50% 50%);
 }
 
 @keyframes kb-jump {
@@ -244,21 +246,12 @@ footer {
   100% { transform: scale(1)    translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
 }
 
-/* ----------------------------
-   NEW: Beat pulse "dance" mode
------------------------------ */
-@keyframes beat-pulse {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.08); }
+/* ---------- NEW: Beat-walk mode (tiny zoom + move to waypoints each beat) ---------- */
+/* We apply transforms in JS, but this transition makes the steps smooth. */
+.beat-walk {
+  transition-property: transform;
+  transition-timing-function: ease-in-out;
 }
 
-.beat-dance {
-  animation: beat-pulse var(--beat-dur, 0.5s) ease-in-out infinite;
-  transform-origin: var(--kb-origin, 50% 50%);
-  will-change: transform;
-}
-
-/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .kenburns, .beat-dance { animation: none !important; }
-}
+  .kenburns, .beat-walk { animation: none !important; transition: non
