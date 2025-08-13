@@ -66,13 +66,13 @@ document.addEventListener('DOMContentLoaded', function () {
   function openModal() { document.body.style.overflow = 'hidden'; }
   function _closeModalOnly() {
     modal.classList.remove('show');
-    stopBeatWalk();
-    modalContent.classList.remove('kenburns', 'beat-walk'); // stop animation
+    stopBeatWalk(); // stop metronome walker
+    modalContent.classList.remove('kenburns', 'beat-walk');
     if (!modal.contains(modalContent)) modal.appendChild(modalContent);
-    document.body.style.overflow = ''; // restore
+    document.body.style.overflow = '';
   }
 
-  // Hidden reusable audio element (add this in HTML)
+  // Hidden reusable audio element (already in HTML)
   const music = document.getElementById('imageMusic');
 
   function stopMusic(reset = false) {
@@ -81,11 +81,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (reset) music.currentTime = 0;
   }
 
-  // --- Beat-walk engine (metronome; supports data-step=N) ---
+  // --- Beat-walk engine (metronome; supports data-step and breathing zoom) ---
   let beatTimer = null;
   let beatIndex = 0;
   let pathPoints = [];
   let beatsPerCycle = 0;
+  let zoomFlip = false; // toggles min<->max scale each interval
 
   function parsePathAttr(pathStr) {
     // data-path example: "-2,-2; 2,-1; 3,1; -1,2"
@@ -108,40 +109,49 @@ document.addEventListener('DOMContentLoaded', function () {
     return out;
   }
 
-  function startBeatWalk({ bpm, beats, scale = 1.04, origin = '50% 50%', step = 1 }) {
+  function startBeatWalk({
+    bpm,
+    beats,
+    origin = '50% 50%',
+    step = 1,
+    minScale = 1.02,
+    maxScale = 1.06
+  }) {
     stopBeatWalk();
     beatIndex = 0;
+    zoomFlip = false;
     beatsPerCycle = Math.max(1, beats);
 
     const beatMs = 60000 / bpm;
-    const intervalMs = Math.max(beatMs * Math.max(1, step), 120); // move every N beats (N=step)
-
-    // Transition spans the whole interval for buttery motion
-    const applyTransition = () => {
-      modalContent.style.transition = `transform ${intervalMs}ms linear`;
-    };
+    const intervalMs = Math.max(beatMs * Math.max(1, step), 120); // glide duration = N beats
 
     modalContent.classList.add('beat-walk');
     modalContent.style.transformOrigin = origin;
 
-    // Prime first pose without transition
+    // Prime first pose without transition (avoid first-frame snap)
     const [x0, y0] = pathPoints[0] || [0, 0];
     modalContent.style.transition = 'none';
-    modalContent.style.transform  = `scale(${scale}) translate3d(${x0}%, ${y0}%, 0)`;
+    modalContent.style.transform  = `scale(${minScale}) translate3d(${x0}%, ${y0}%, 0)`;
 
-    // Enable transition next frame, step to point #1 over N beats
+    // Enable transition next frame, step to point #1 over N beats (zoom -> max)
     requestAnimationFrame(() => {
-      applyTransition();
+      modalContent.style.transition = `transform ${intervalMs}ms linear`;
       const [x1, y1] = pathPoints[1 % pathPoints.length] || [x0, y0];
-      modalContent.style.transform = `scale(${scale}) translate3d(${x1}%, ${y1}%, 0)`;
+      modalContent.style.transform = `scale(${maxScale}) translate3d(${x1}%, ${y1}%, 0)`;
       beatIndex = 1;
+      zoomFlip = true;
     });
 
-    // Move one waypoint every N beats (continuous glide between)
+    // Move one waypoint every N beats; alternate scale min<->max for "breathing"
     beatTimer = setInterval(() => {
       beatIndex = (beatIndex + 1) % beatsPerCycle;
       const [x, y] = pathPoints[beatIndex % pathPoints.length];
-      modalContent.style.transform = `scale(${scale}) translate3d(${x}%, ${y}%, 0)`;
+      const targetScale = zoomFlip ? minScale : maxScale; // toggle each interval
+      zoomFlip = !zoomFlip;
+
+      // Full-interval linear glide
+      modalContent.style.transition = `transform ${intervalMs}ms linear`;
+      modalContent.style.transform  = `scale(${targetScale}) translate3d(${x}%, ${y}%, 0)`;
     }, intervalMs);
   }
 
@@ -166,20 +176,21 @@ document.addEventListener('DOMContentLoaded', function () {
       modal.classList.add('show');
       openModal();
 
-      // Stop any prior animation
+      // Reset animations
       stopBeatWalk();
       modalContent.classList.remove('kenburns', 'beat-walk');
 
       const isArtZoom  = this.classList.contains('art-zoom');
       const isMusic    = this.classList.contains('music-trigger') && this.dataset.audio;
-      const wantsDance = this.classList.contains('dance-mode'); // NEW toggle
+      const wantsDance = this.classList.contains('dance-mode'); // beat-walk vs kenburns
 
-      // Set motion / pacing from data-*
-      const bpm     = Number(this.dataset.bpm   || 96);
-      const beats   = Number(this.dataset.beats || 16);  // pattern length
-      const origin  = this.dataset.origin || '50% 50%';
-      const scale   = Number(this.dataset.scale || 1.04); // tiny constant zoom
-      const step    = Number(this.dataset.step  || 1);    // move every N beats
+      // Motion / pacing from data-*
+      const bpm       = Number(this.dataset.bpm   || 96);
+      const beats     = Number(this.dataset.beats || 16);  // path length
+      const origin    = this.dataset.origin || '50% 50%';
+      const step      = Number(this.dataset.step  || 1);   // move every N beats
+      const minScale  = Number(this.dataset.minscale || 1.02);
+      const maxScale  = Number(this.dataset.maxscale || 1.06);
 
       // Optional custom path
       pathPoints = this.dataset.path ? parsePathAttr(this.dataset.path) : defaultPath(beats);
@@ -194,13 +205,13 @@ document.addEventListener('DOMContentLoaded', function () {
       modalContent.style.setProperty('--kb-x2', this.dataset.kbx2 || '1.5%');
       modalContent.style.setProperty('--kb-y2', this.dataset.kby2 || '1.5%');
 
-      // Music first, then animation (so starts together)
+      // Music first, then animation (to align the start)
       if (isMusic) {
         try {
           music.src = this.dataset.audio;
           music.load();
           music.currentTime = 0;
-          await music.play();                 // wait until audio actually starts
+          await music.play();
           modalContent.style.setProperty('--kb-delay', '0s');
         } catch (_) {
           modalContent.style.setProperty('--kb-delay', '0s');
@@ -210,19 +221,19 @@ document.addEventListener('DOMContentLoaded', function () {
         modalContent.style.setProperty('--kb-delay', '0s');
       }
 
-      // Finally start the animation if needed
+      // Start the animation
       if (isArtZoom) {
         if (wantsDance) {
-          startBeatWalk({ bpm, beats, scale, origin, step }); // beat-walk mode
+          startBeatWalk({ bpm, beats, origin, step, minScale, maxScale });
         } else {
-          void modalContent.offsetWidth;        // reflow for clean restart
-          modalContent.classList.add('kenburns'); // legacy Ken Burns jump
+          void modalContent.offsetWidth; // reflow for clean restart
+          modalContent.classList.add('kenburns');
         }
       }
     });
   });
 
-  // Video click → show video (pause music, no Ken Burns)
+  // Video click → show video (pause music, no image animation)
   document.querySelectorAll('.media video').forEach(video => {
     video.style.cursor = 'pointer';
     video.addEventListener('click', function () {
