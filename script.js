@@ -39,9 +39,11 @@ projectCards.forEach(card => {
   observer.observe(card);
 });
 
-// ------------------------
-// Modal + per-image audio + beat-synced animation
-// ------------------------
+/* -------------------------------------------------
+   Modal + per-image audio + beat-synced animation
+   - "dance-mode" = beat-walk (tiny zoom + moves)
+   - otherwise, keep existing kb-jump Ken Burns
+   ------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function () {
   // Build modal once
   const modal = document.createElement('div');
@@ -65,9 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
   function openModal() { document.body.style.overflow = 'hidden'; }
   function _closeModalOnly() {
     modal.classList.remove('show');
-    // stop animations
-    modalContent.classList.remove('kenburns', 'beat-dance');
-    // restore img holder if video had replaced it
+    stopBeatWalk();                 // NEW: stop the metronome mover
+    modalContent.classList.remove('kenburns', 'beat-walk');
     if (!modal.contains(modalContent)) modal.appendChild(modalContent);
     document.body.style.overflow = '';
   }
@@ -81,133 +82,43 @@ document.addEventListener('DOMContentLoaded', function () {
     if (reset) music.currentTime = 0;
   }
 
-  // Image click → open modal (animate if .art-zoom); play audio if .music-trigger + data-audio
-  document.querySelectorAll('.media img').forEach(img => {
-    img.style.cursor = 'pointer';
-    img.addEventListener('click', async function () {
-      // If modal currently shows a video, clear it and restore img holder
-      const existingVideo = modal.querySelector('video');
-      if (existingVideo) { existingVideo.remove(); modal.appendChild(modalContent); }
+  // --- Beat-walk engine (metronome controlled by data-bpm & data-beats) ---
+  let beatTimer = null;
+  let beatIndex = 0;
+  let pathPoints = [];
+  let beatsPerCycle = 0;
 
-      // Show image
-      modalContent.src = this.src;
-      modalContent.alt = this.alt || '';
-      modal.classList.add('show');
-      openModal();
-
-      // Remove any previous animations before starting fresh
-      modalContent.classList.remove('kenburns', 'beat-dance');
-
-      const isArtZoom = this.classList.contains('art-zoom');
-      const isMusic   = this.classList.contains('music-trigger') && this.dataset.audio;
-      const wantsDance = this.classList.contains('dance-mode'); // NEW toggle
-
-      // Set motion parameters (used by both modes)
-      if (isArtZoom) {
-        const bpm   = Number(this.dataset.bpm || 96);
-        const beats = Number(this.dataset.beats || 16);
-        const loopSeconds = (60 * beats) / bpm;
-        const beatDuration = 60 / bpm;
-
-        // shared CSS vars
-        modalContent.style.setProperty('--kb-dur', `${loopSeconds}s`);
-        modalContent.style.setProperty('--beat-dur', `${beatDuration}s`);
-        modalContent.style.setProperty('--kb-origin', this.dataset.origin || '50% 50%');
-        modalContent.style.setProperty('--kb-x1', this.dataset.kbx1 || '-1.5%');
-        modalContent.style.setProperty('--kb-y1', this.dataset.kby1 || '-1.5%');
-        modalContent.style.setProperty('--kb-x2', this.dataset.kbx2 || '1.5%');
-        modalContent.style.setProperty('--kb-y2', this.dataset.kby2 || '1.5%');
-      }
-
-      // Start music first so animation lines up
-      if (isMusic) {
-        try {
-          music.src = this.dataset.audio;
-          music.load();
-          music.currentTime = 0;
-          await music.play();
-          modalContent.style.setProperty('--kb-delay', '0s');
-        } catch (_) {
-          modalContent.style.setProperty('--kb-delay', '0s');
-        }
-      } else {
-        stopMusic(true);
-        modalContent.style.setProperty('--kb-delay', '0s');
-      }
-
-      // Start animation
-      if (isArtZoom) {
-        void modalContent.offsetWidth; // reflow for clean restart
-        if (wantsDance) {
-          modalContent.classList.add('beat-dance'); // beat pulse
-        } else {
-          modalContent.classList.add('kenburns');   // jumpy Ken Burns
-        }
-      }
+  function parsePathAttr(pathStr) {
+    // data-path example: " -2,-2 ; 2,-1 ; 3,1 ; -1,2 "
+    const pts = [];
+    pathStr.split(/[;|]/).forEach(chunk => {
+      const m = chunk.trim().match(/(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)/);
+      if (m) pts.push([parseFloat(m[1]), parseFloat(m[2])]);
     });
-  });
-
-  // Video click → show video (pause music, no Ken Burns / no beat dance)
-  document.querySelectorAll('.media video').forEach(video => {
-    video.style.cursor = 'pointer';
-    video.addEventListener('click', function () {
-      stopMusic(true);
-
-      const videoModal = document.createElement('video');
-      videoModal.className = 'modal-video';
-      videoModal.controls = true;
-
-      const sourceEl = this.querySelector('source');
-      if (sourceEl) {
-        const source = document.createElement('source');
-        source.src = sourceEl.src;
-        source.type = sourceEl.type || 'video/mp4';
-        videoModal.appendChild(source);
-      }
-
-      // Clear modal content (keep close button)
-      modal.innerHTML = '';
-      modal.appendChild(closeBtn);
-      modal.appendChild(videoModal);
-      modal.classList.add('show');
-      openModal();
-
-      try { videoModal.play(); } catch (_) {}
-    });
-  });
-
-  // --- Close modal helpers ---
-  function closeModal() {
-    _closeModalOnly();
-    stopMusic(); // pause audio too
+    return pts;
   }
 
-  closeBtn.addEventListener('click', closeModal);
-  closeBtn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') closeModal();
-  });
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
-  });
-
-  // Expose for debugging if needed:
-  window.__modal = { modal, modalContent, closeBtn };
-});
-
-// Lazy code viewer
-function loadCode(filename) {
-  const pre = document.getElementById('code-' + filename);
-  if (pre.style.display === 'none') {
-    fetch('code/' + filename)
-      .then(res => res.text())
-      .then(data => {
-        pre.textContent = data;
-        pre.style.display = 'block';
-      });
-  } else {
-    pre.style.display = 'none';
+  function defaultPath(n = 8) {
+    // A pleasant loop around the frame edges (percent offsets)
+    const base = [
+      [-2, -2], [ 2, -3], [ 3,  1], [ 1,  3],
+      [-1,  2], [-3,  0], [ 2,  2], [ 0, -1]
+    ];
+    // Repeat or trim to requested length
+    const out = [];
+    for (let i = 0; i < n; i++) out.push(base[i % base.length]);
+    return out;
   }
-}
+
+  function startBeatWalk({ bpm, beats, scale = 1.04, origin = '50% 50%' }) {
+    stopBeatWalk();
+    beatIndex = 0;
+    beatsPerCycle = beats;
+
+    const beatMs = 60000 / bpm;
+    // Smooth step: ~40% of beat duration but capped
+    const stepMs = Math.min(beatMs * 0.4, 250);
+
+    modalContent.classList.add('beat-walk');
+    modalContent.style.transformOrigin = origin;
+    m
