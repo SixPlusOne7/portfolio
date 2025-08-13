@@ -248,3 +248,28 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .kenburns, .beat-walk { animation: none !important; transition: none !important; }
 }
+
+.credits {
+  font-size: 0.75rem;           /* small text */
+  color: rgba(0, 0, 0, 0.45);   /* faint on light backgrounds */
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.credits a {
+  color: inherit;               /* same faint color */
+  text-decoration: none;
+}
+
+.credits a:hover {
+  text-decoration: underline;
+}
+
+/* Dark mode version */
+@media (prefers-color-scheme: dark) {
+  .credits {
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
+
