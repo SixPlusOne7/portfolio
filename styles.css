@@ -238,7 +238,7 @@ footer {
   100% { transform: scale(1)    translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
 }
 
-/* ---------- NEW: Beat-walk mode (tiny zoom + move to waypoints) ---------- */
+/* ---------- NEW: Beat-walk mode (tiny zoom + move to waypoints + breathing) ---------- */
 .beat-walk {
   will-change: transform;
   transition-property: transform;     /* duration set per (N-beat) interval in JS */
