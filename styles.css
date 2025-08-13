@@ -136,7 +136,7 @@ h3 {
 /* Keep media thumbnails small */
 .project-card .media img,
 .project-card .media video {
-  width: 320px; /* adjust as needed */
+  width: 320px;
   height: auto;
   object-fit: cover;
   border-radius: 8px;
@@ -260,7 +260,6 @@ footer {
     object-fit: contain;
 }
 
-/* KEEP CLOSE (X) ABOVE EVERYTHING */
 .close {
   position: fixed;
   top: max(16px, env(safe-area-inset-top));
@@ -286,7 +285,7 @@ footer {
 }
 
 /* ----------------------------
-   Ken Burns jump on beat
+   Ken Burns jump on beat (no slow transition)
 ----------------------------- */
 .modal .modal-content {
   will-change: transform;
