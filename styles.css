@@ -300,6 +300,10 @@ footer {
 }
 
 @keyframes kb-jump {
+  /* start pose */
   0%   { transform: scale(1)    translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
-  100% { transform: scale(1.30) translate(var(--kb-x2,  3%), var(--kb-y2,  3%)); }
+  /* mid-cycle snap to end pose (first jump) */
+  50%  { transform: scale(1.30) translate(var(--kb-x2,  3%), var(--kb-y2,  3%)); }
+  /* end of cycle back to start (second jump happens when it loops or alternates) */
+  100% { transform: scale(1)    translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
 }
