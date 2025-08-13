@@ -40,7 +40,7 @@ projectCards.forEach(card => {
 });
 
 // ------------------------
-// Modal + per-image audio + beat-synced Ken Burns
+// Modal + per-image audio + beat-synced Ken Burns (continuous, no per-beat jumps)
 // ------------------------
 document.addEventListener('DOMContentLoaded', function () {
   // Build modal once
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const closeBtn = document.createElement('span');
   closeBtn.className = 'close';
   closeBtn.innerHTML = '&times;';
-  // a11y
+  // a11y for keyboard users
   closeBtn.setAttribute('role', 'button');
   closeBtn.setAttribute('aria-label', 'Close image viewer');
   closeBtn.setAttribute('tabindex', '0');
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
 
-  // prevent background scroll while open
+  // Prevent background scroll while modal is open
   function openModal() { document.body.style.overflow = 'hidden'; }
   function _closeModalOnly() {
     modal.classList.remove('show');
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.style.overflow = ''; // restore
   }
 
-  // Hidden reusable audio element (add this in HTML; see section 2)
+  // Hidden reusable audio element (must exist in HTML)
   const music = document.getElementById('imageMusic');
 
   function stopMusic(reset = false) {
@@ -97,43 +97,43 @@ document.addEventListener('DOMContentLoaded', function () {
       // Stop any prior animation
       modalContent.classList.remove('kenburns');
 
+      // Determine behaviors
       const isArtZoom = this.classList.contains('art-zoom');
-      const isMusic   = this.classList.contains('music-trigger') && this.dataset.audio;
+      const track = this.dataset.audio;
+      const isMusic = this.classList.contains('music-trigger') && track;
 
-      // Set Ken Burns duration & optional path vars if needed
+      // --- Ken Burns duration from BPM × beats (slower = bigger beats) ---
       if (isArtZoom) {
-        const bpm   = Number(this.dataset.bpm || 96);
-        const beats = Number(this.dataset.beats || 64);
+        const bpm   = Number(this.dataset.bpm || 96);      // per-image tempo (override in HTML)
+        const beats = Number(this.dataset.beats || 64);     // default to a slow 64-beat loop
         const loopSeconds = (60 * beats) / bpm;
         modalContent.style.setProperty('--kb-dur', `${loopSeconds}s`);
-        // gentler motion defaults; override via data-* if you want
+
+        // Optional path/origin (safe defaults)
         modalContent.style.setProperty('--kb-origin', this.dataset.origin || '50% 50%');
-        modalContent.style.setProperty('--kb-x1', this.dataset.kbx1 || '-1.5%');
-        modalContent.style.setProperty('--kb-y1', this.dataset.kby1 || '-1.5%');
-        modalContent.style.setProperty('--kb-x2', this.dataset.kbx2 || '1.5%');
-        modalContent.style.setProperty('--kb-y2', this.dataset.kby2 || '1.5%');
       }
 
-      // Music first, then animation (so starts EXACTLY together)
+      // --- Start audio first, then animation (so they begin together) ---
       if (isMusic) {
         try {
-          music.src = this.dataset.audio;
+          music.src = track;
           music.load();
           music.currentTime = 0;
-          await music.play();                 // wait until audio actually starts
+          await music.play(); // wait until audio actually starts
+          // align animation phase with audio start
           modalContent.style.setProperty('--kb-delay', '0s');
         } catch (_) {
-          // if autoplay blocked, still run the animation
           modalContent.style.setProperty('--kb-delay', '0s');
         }
       } else {
+        // No music for this image
         stopMusic(true);
         modalContent.style.setProperty('--kb-delay', '0s');
       }
 
-      // Finally start the animation if needed
+      // Finally start the animation (continuous – no per-beat jumps)
       if (isArtZoom) {
-        void modalContent.offsetWidth;        // reflow for clean restart
+        void modalContent.offsetWidth; // reflow for clean restart
         modalContent.classList.add('kenburns');
       }
     });
@@ -185,21 +185,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
   });
 
-  // Expose for debugging if needed:
-  window.__modal = { modal, modalContent, closeBtn };
+  // Debug helper: inspect computed duration when you click
+  window.__kbDebug = (bpm, beats) => console.log('[KenBurns]', { bpm, beats, seconds: (60*beats)/bpm });
 });
-
-// Lazy code viewer (unchanged)
-function loadCode(filename) {
-  const pre = document.getElementById('code-' + filename);
-  if (pre.style.display === 'none') {
-    fetch('code/' + filename)
-      .then(res => res.text())
-      .then(data => {
-        pre.textContent = data;
-        pre.style.display = 'block';
-      });
-  } else {
-    pre.style.display = 'none';
-  }
-}
