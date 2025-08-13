@@ -11,7 +11,7 @@
     <section id="home" class="section">
         <div class="container">
             <h1>Hello, I'm <span class="highlight">Jiayi Liu</span></h1>
-            <h3>Mechanical Engineering Undergraduate Student</h3>
+            <h3>Mechanical Engineering Undergraduate Student</h2>
             <h3>University of Hawaii at Manoa</h3>
             <p>Passionate about innovative engineering solutions, creative coding, and visual arts.</p>
         </div>
@@ -22,29 +22,29 @@
             <h2>Engineering Projects</h2>
             <div class="projects-grid">
                 <div class="project-card">
-                    <h3>Multifunctional Jellyfish Inspired Underwater Robot</h3>
-                    <p><em>Soft robotic system for scientific observation and environmental cleanup with minimal marine life disturbance</em></p>
-                    <div class="project-details">
-                        <div class="components">
-                            <h4>Key Components:</h4>
-                            <ul>
-                                <li><strong>Pneumatic Soft Actuators</strong>:
-                                    <ul>
-                                        <li>Heat-sealed PET film air channels</li>
-                                        <li>pneumatic channel designs for various bending range</li>
-                                        <li>material selection and CNC parameter tuning for improved durability</li>
-                                    </ul>
-                                </li>
-                                <li><strong>Modular Assembly</strong>:
-                                    <ul>
-                                        <li>CAD-designed PLA, resin connectors</li>
-                                        <li>Integrated silicone gripping surfaces</li>
-                                        <li>Equipped stiffning component for secured gripping</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <p><strong>Tools</strong>: FDM 3D Printing, Stereolithography, Laser Cutting, CNC Writing Robot</p>
-                        </div>
+                        <h3>Multifunctional Jellyfish Inspired Underwater Robot</h3>
+                        <p><em>Soft robotic system for scientific observation and environmental cleanup with minimal marine life disturbance</em></p>
+                        <div class="project-details">
+                            <div class="components">
+                                <h4>Key Components:</h4>
+                                <ul>
+                                    <li><strong>Pneumatic Soft Actuators</strong>: 
+                                        <ul>
+                                            <li>Heat-sealed PET film air channels</li>
+                                            <li>pneumatic channel designs for various bending range</li>
+                                            <li>material selection and CNC parameter tuning for improved durability</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Modular Assembly</strong>:
+                                        <ul>
+                                            <li>CAD-designed PLA, resin connectors</li>
+                                            <li>Integrated silicone gripping surfaces</li>
+                                            <li>Equipped stiffning component for secured gripping</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <p><strong>Tools</strong>: FDM 3D Printing, Stereolithography, Laser Cutting, CNC Writing Robot</p>  
+                            </div>
                     </div>
                     <div class="media">
                         <video width="320" height="240" controls>
@@ -60,16 +60,16 @@
                         <img src="portfolio_images_engr/gipper_CAD.png" alt="Image 2 for Engineering Project 1" width="320" title="Click to enlarge">
                     </div>
                 </div>
-
                 <div class="project-card">
                     <h3>University of Hawai'i Drone Team (UHDT)</h3>
+                    
                     <p><strong>LiDAR Mount</strong></p>
                     <ul>
                         <li>Designed a modular mount system to secure the LiDAR unit, power bank, Jetson, and battery on the drone.</li>
                         <li>Used dovetail joints to connect parts too large to fit on the 3D printer's build plate.</li>
                         <li>Modular structure improves assembly and maintenance while keeping the design strong and lightweight.</li>
                     </ul>
-
+                
                     <p><strong>Landing Gear </strong></p>
                     <ul>
                         <li>Redesigned the landing gear to allow the UAV to fit into standard luggage for travel.</li>
@@ -78,14 +78,13 @@
                         <li>During testing, TPU was too flexible, causing the drone to wobble upon landing.</li>
                         <li>Plan to prototype with PETG next, which offers better stiffness and impact resistance for more stable landings.</li>
                     </ul>
-
+                
                     <div class="media">
                         <img src="portfolio_images_rest/mount.jpg" alt="UHDT Lidar Mount" width="320" title="Click to enlarge">
                         <img src="portfolio_images_rest/UHDT battery mount.png" alt="UHDT Battery Mount" width="320" title="Click to enlarge">
                         <img src="portfolio_images_rest/IMG_8709.png" alt="UHDT Landing Gear 2" width="320" title="Click to enlarge">
                     </div>
                 </div>
-
                 <div class="project-card">
                     <h3>Balloon Gripper for Soft Robotic Manipulation</h3>
                     <p><em>Lightweight, compliant gripper that gently conforms to objects using fluid-driven membrane expansion</em></p>
@@ -110,11 +109,10 @@
                             <source src="portfolio_images_engr/vcompress_20.mov" type="video/mp4">
                         </video>
                     </div>
-                </div>
+                </div>                
             </div>
         </div>
     </section>
-
     <section id="coding" class="section">
         <div class="container">
             <h2>Coding Projects</h2>
@@ -122,54 +120,56 @@
                 <div class="project-card">
                     <h3>Kinematic Analysis of Undulatory Swimmers for Bio-inspired Robotics</h3>
                     <p><em>Python tool to quantify swimming mechanics and guide energy-efficient robot design</em></p>
-                    <p>I wrote this code to analyze video frames of undulatory swimmers, such as fish and bio-inspired robots...</p>
+                    <p>I wrote this code to analyze video frames of undulatory swimmers, such as fish and bio-inspired robots, to study their body shapes and movement patterns. By tracking features such as head angle and swimming speed, the code can be used to better understand underwater locomotion and support the development of robotic models that mimic efficient biological movement.</p>
                     <ul>
-                      <li><strong>Body Shape Extraction</strong>: Track body midlines by marking points from head to tail.</li>
-                      <li><strong>Curve Generation</strong>: Convert points into smooth curves using interpolation.</li>
-                      <li><strong>Movement Analysis</strong>: Measure head angle and speed to study movement efficiency.</li>
-                      <li><strong>Data Visualization</strong>: Plot curves and data points to compare body shapes.</li>
-                    </ul>
-                    <p><strong>Tools</strong>: Python, OpenCV, SciPy, Matplotlib</p>
+                    <li><strong>Body Shape Extraction</strong>: Track body midlines by marking points from head to tail.</li>  
+                    <li><strong>Curve Generation</strong>: Convert points into smooth curves using interpolation.</li>  
+                    <li><strong>Movement Analysis</strong>: Measure head angle and speed to study movement efficiency.</li>  
+                    <li><strong>Data Visualization</strong>: Plot curves and data points to compare body shapes.</li>  
+                    </ul>  
+                    <p><strong>Tools</strong>: Python, OpenCV, SciPy, Matplotlib</p>  
                     <div class="media">
                         <img src="portfolio_images_rest/Image_processing_data_extracting.png" alt="Image_processing_data_extracting" width="320" title="Click to enlarge">
                         <img src="portfolio_images_rest/Larva Fish Midline Extraction (1).png" alt="Larva Fish Midline Extraction (1)" width="320" title="Click to enlarge">
                         <img src="portfolio_images_rest/Larva Fish Midline Extraction.png" alt="Larva Fish Midline Extraction" width="320" title="Click to enlarge">
                     </div>
                 </div>
-
                 <div class="project-card">
                     <h3>Bank Record Management System (C Project)</h3>
-                    <p>Terminal-based C program that manages a list of bank account records...</p>
+                    <p>I developed a terminal-based C program that manages a list of bank account records. It allows users to add, find, delete, and display records, and saves data to a file for persistent storage. I used a linked list to store the data in memory, and implemented input validation to make sure the program handles all user input safely without crashing or misbehaving.</p>                
                     <ul>
                         <li><strong>Language:</strong> C</li>
                         <li><strong>Concepts:</strong> Pointers, Structs, Linked Lists, File I/O, Memory Management</li>
-                        <li><strong>Input Handling:</strong> Thorough input validation...</li>
+                        <li><strong>Input Handling:</strong> Thorough input validation ensures safe handling of account numbers, names, and addresses. For example, invalid input is rejected and the user is re-prompted until valid input is received.</li>
                         <li><strong>Structure:</strong>
                             <ul>
-                                <li><strong>user_interface.c</strong>: UI and input</li>
-                                <li><strong>database.c</strong>: core functions</li>
-                                <li><strong>record.h</strong>: data structures</li>
-                                <li><strong>database.h</strong>: shared prototypes</li>
+                                <li><strong>user_interface.c</strong>: Handles the user menu, input logic, and function calls</li>
+                                <li><strong>database.c</strong>: Implements core functions like <code>addRecord</code>, <code>findRecord</code>, <code>deleteRecord</code>, <code>printAllRecords</code>, <code>readfile</code>, and <code>writefile</code></li>
+                                <li><strong>record.h</strong>: Defines the structure for each record</li>
+                                <li><strong>database.h</strong>: Contains function prototypes shared across files</li>
                             </ul>
                         </li>
+                        <li><strong>Reliability:</strong> All core features were tested successfully. The program reads and writes data in the correct format and maintains memory integrity by cleaning up all dynamically allocated memory on exit.</li>
                     </ul>
-
+                
                     <p><strong>Click to view code files:</strong></p>
+                
                     <div>
                         <button onclick="loadCode('database.c')">database.c</button>
                         <pre id="code-database.c" class="code-block" style="display: none;"></pre>
-
+                
                         <button onclick="loadCode('user_interface.c')">user_interface.c</button>
                         <pre id="code-user_interface.c" class="code-block" style="display: none;"></pre>
-
+                
                         <button onclick="loadCode('database.h')">database.h</button>
                         <pre id="code-database.h" class="code-block" style="display: none;"></pre>
-
+                
                         <button onclick="loadCode('record.h')">record.h</button>
                         <pre id="code-record.h" class="code-block" style="display: none;"></pre>
 
                         <button onclick="loadCode('summary.txt')">summary.txt</button>
                         <pre id="code-summary.txt" class="code-block" style="display: none;"></pre>
+
                     </div>
                 </div>
             </div>
@@ -180,116 +180,81 @@
       <div class="container">
         <h2>Digital Art</h2>
         <div class="projects-grid">
-
+    
           <div class="project-card">
             <h3>Jellyfish Soft Robotic System Drawing</h3>
-            <p>This is a drawing I created for my project on the Jellyfish soft robotic system...</p>
+            <p>This is a drawing I created for my project on the Jellyfish soft robotic system, which is designed to integrate with an ROV. It showcases how the system can support various sensors (like cameras and temperature sensors) for autonomous underwater data collection. I also illustrated its ability to navigate confined areas, grip objects, and adapt its locomotion for environmentally friendly operation.</p>
             <p><em>The digital artwork incorporates a few components sourced from online references.</em></p>
             <div class="media">
-              <img src="portfolio_images_rest/Jellyfish_Robot_For_Underwear_Exploration_.png" alt="Image for Digital Art Showcase 2" width="320" title="Click to enlarge">
+              <img src="portfolio_images_rest/Jellyfish_Robot_For_Underwear_Exploration_.png" alt="Image for Digital Art Showcase 2" width="320" title="Click to enlarge" >
             </div>
           </div>
-
+    
           <div class="project-card">
             <h3>Girl and Crane Night Scene</h3>
-            <p>This piece was inspired by a scene from the Chinese drama A Moment But Forever (念无双)...</p>
+            <p>This piece was inspired by a scene from the Chinese drama A Moment But Forever (念无双). I was drawn to the quiet beauty of that moment and wanted to capture a sense of stillness and connection. Using soft lighting and a dreamlike night setting, I reimagined the scene in my own style to reflect the calm, peaceful feeling it gave me.</p>
             <div class="media">
-              <!-- Beat-walk demo: moves every other beat (step=2), 8-beat loop -->
-              <img src="portfolio_images_rest/IMG_3437.PNG"
-                   alt="Girl and Crane Night Scene"
-                   width="320"
-                   title="Click to enlarge"
-                   class="music-trigger art-zoom dance-mode"
-                   data-audio="audio/咫尺一眼念无双影视剧片尾曲 (人声伴奏版).mp3"
-                   data-origin="65% 40%"
-                   data-bpm="110"
-                   data-beats="8"
-                   data-step="7">
-              <small>💫 Click the image (volume on!)</small>
+              <img src="portfolio_images_rest/IMG_3437.PNG" alt="Image for Digital Art Showcase 1" width="320" title="Click to enlarge" class="music-trigger art-zoom" data-audio="audio/咫尺一眼念无双影视剧片尾曲 (人声伴奏版).mp3" data-origin="65% 40%" data-bpm="110" data-beats="48">
+              <small>💫 Click the image for a little magic (ps: volume on!)</small>
             </div>
           </div>
-
+    
           <div class="project-card">
             <h3>Crimson Silence</h3>
-            <p>A girl sits in the rain, wearing a striking red gown...</p>
+            <p>A girl sits in the rain, wearing a striking red gown that reflects the fast-paced city life she's caught in. A single, almost invisible tear falls from her pink eyes. Around her, white petals scatter, like the quiet, forgotten pieces of herself left behind in the rush.</p>
             <div class="media">
-              <!-- Beat-walk every beat (no step specified = 1) -->
-              <img src="portfolio_images_rest/IMG_3405.PNG"
-                   alt="Crimson Silence"
-                   width="320"
-                   title="Click to enlarge"
-                   class="music-trigger art-zoom dance-mode"
-                   data-audio="audio/江語晨 -最後一頁伴奏想把你抱進身體裡面 不敢讓你看見繁中拼音卡拉歐給.mp3"
-                   data-origin="65% 40%"
-                   data-bpm="138"
-                   data-beats="30">
-              <small>💫 Click the image (volume on!)</small>
+              <img src="portfolio_images_rest/IMG_3405.PNG" alt="Image for Digital Art Showcase 1" width="320" title="Click to enlarge" class="music-trigger art-zoom" data-audio="audio/江語晨 -最後一頁伴奏想把你抱進身體裡面 不敢讓你看見繁中拼音卡拉歐給.mp3" data-origin="65% 40%"   data-bpm="138" data-beats="48">
+              <small>💫 Click the image for a little magic (ps: volume on!)</small>
             </div>
           </div>
-
+    
           <div class="project-card">
             <h3>Some Lost Memories</h3>
-            <p>Every now and then, we stumble upon an old childhood photo...</p>
+            <p>Every now and then, we stumble upon an old childhood photo and see ourselves smiling so brightly, laughing so freely. I don't remember what made me so happy that day, but looking at that carefree joy, I know I was truly happy.</p>
             <div class="media">
-              <!-- Keeps old Ken Burns (no dance-mode) -->
-              <img src="portfolio_images_rest/IMG_3256.PNG"
-                   alt="Some Lost Memories"
-                   width="320"
-                   title="Click to enlarge"
-                   class="music-trigger art-zoom"
-                   data-audio="audio/关于你 (伴奏版).mp3"
-                   data-origin="65% 40%"
-                   data-bpm="71"
-                   data-beats="10">
-              <small>💫 Click the image (volume on!)</small>
+              <img src="portfolio_images_rest/IMG_3256.PNG" alt="Image for Digital Art Showcase 1" width="320" title="Click to enlarge" class="music-trigger art-zoom" data-audio="audio/关于你 (伴奏版).mp3" data-origin="65% 40%"  data-bpm="71" data-beats="32" >
+              <small>💫 Click the image for a little magic (ps: volume on!)</small>
             </div>
           </div>
-
+    
           <div class="project-card">
             <h3>Swaying Spring</h3>
-            <p>Inspired by the song 《画中游》...</p>
+            <p>Inspired by the song 《画中游》. A girl rows under the willow, water sparkling around her. The bridge, the breeze, and the bright spring light all seem to move with the song’s happy rhythm.</p>
             <div class="media">
-              <!-- Beat-walk moves every 3rd beat (step=3), 12-beat loop -->
-              <img src="portfolio_images_rest/IMG_3431.PNG"
-                   alt="Swaying Spring"
-                   width="320"
-                   title="Click to enlarge"
-                   class="music-trigger art-zoom dance-mode"
-                   data-audio="audio/画中游 (伴奏).mp3"
-                   data-origin="65% 40%"
-                   data-bpm="132"
-                   data-beats="12"
-                   data-step="3">
-              <small>💫 Click the image (volume on!)</small>
+              <img src="portfolio_images_rest/IMG_3431.PNG" alt="Image for Digital Art Showcase 1" width="320" title="Click to enlarge" class="music-trigger art-zoom" data-audio="audio/画中游 (伴奏).mp3" data-origin="65% 40%" data-bpm="132" data-beats="16">
+              <small>💫 Click the image for a little magic (ps: volume on!)</small>
             </div>
           </div>
-
+    
         </div>
       </div>
     </section>
 
     <footer>
       <p>© 2025 Jiayi Liu. All rights reserved. Built with HTML, CSS, and JavaScript with assistance from ChatGPT.</p>
-
+    
       <p class="credits">
-        “About You (Instrumental)” (关于你 伴奏版) — Yao Xiaotang (姚晓棠), © 2024 NetEase Cloud Music...
+        “About You (Instrumental)” (关于你 伴奏版) — Yao Xiaotang (姚晓棠), © 2024 NetEase Cloud Music (网易云音乐), composers: Kim Waitt, Li Xuan (李玄). Originally published on YouTube.
       </p>
+    
       <p class="credits">
-        “At a Glance” (咫尺一眼) — vocal accompaniment version...
+        “At a Glance” (咫尺一眼) — vocal accompaniment version, performed by Zhang Liangying (张靓颖), from <em>Nian Wu Shuang</em> (《念无双》) OST. © 2025 Shanghai Shaoyin Music Entertainment Co., Ltd. (上海韶愔音乐娱乐有限公司). Composers: Chen Jieyi (陈泇伊), Hanshang (寒觞). Lyricist: Zhao Subing (赵素冰). Originally published on YouTube.
       </p>
+    
       <p class="credits">
-        “Hua Zhong You (Instrumental)” (画中游 伴奏) — Wang Qiushi (王秋实)...
+        “Hua Zhong You (Instrumental)” (画中游 伴奏) — Wang Qiushi (王秋实), lyrics: Yang Yuxin (杨雨心), composer: Wang Qiushi (王秋实), © 2022 Kugou Culture (酷狗文化). Originally published on YouTube.
       </p>
+    
       <p class="credits">
-        “Last Page” — piano cover by Pop Movement – 流行乐章TT...
+        “Last Page” (《最后一页》) — piano cover by Pop Movement – 流行乐章TT, © 2023. Originally published on YouTube (Apr 26, 2023).
       </p>
-
+    
       <p class="credits">
-        Background image “Underwater Ocean Background Design Illustration” — Vecteezy contributor,
+        Background image “Underwater Ocean Background Design Illustration” — Vecteezy contributor, 
         <a href="https://www.vecteezy.com/photo/27572220-underwater-ocean-background-design-illustration-art">Vecteezy</a>.
       </p>
     </footer>
-
+                    
     <script src="script.js"></script>
     <!-- Hidden, reused audio player -->
     <audio id="imageMusic" preload="auto"></audio>
