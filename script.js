@@ -40,7 +40,7 @@ projectCards.forEach(card => {
 });
 
 // ------------------------
-// Modal + per-image audio + beat-synced Ken Burns
+// Modal + per-image audio + beat-synced animation
 // ------------------------
 document.addEventListener('DOMContentLoaded', function () {
   // Build modal once
@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const closeBtn = document.createElement('span');
   closeBtn.className = 'close';
   closeBtn.innerHTML = '&times;';
-  // a11y
   closeBtn.setAttribute('role', 'button');
   closeBtn.setAttribute('aria-label', 'Close image viewer');
   closeBtn.setAttribute('tabindex', '0');
@@ -66,140 +65,12 @@ document.addEventListener('DOMContentLoaded', function () {
   function openModal() { document.body.style.overflow = 'hidden'; }
   function _closeModalOnly() {
     modal.classList.remove('show');
-    modalContent.classList.remove('kenburns'); // stop animation
+    // stop animations
+    modalContent.classList.remove('kenburns', 'beat-dance');
+    // restore img holder if video had replaced it
     if (!modal.contains(modalContent)) modal.appendChild(modalContent);
-    document.body.style.overflow = ''; // restore
+    document.body.style.overflow = '';
   }
 
-  // Hidden reusable audio element (add this in HTML)
-  const music = document.getElementById('imageMusic');
-
-  function stopMusic(reset = false) {
-    if (!music) return;
-    music.pause();
-    if (reset) music.currentTime = 0;
-  }
-
-  // Image click → open modal (animate only if .art-zoom)
-  document.querySelectorAll('.media img').forEach(img => {
-    img.style.cursor = 'pointer';
-    img.addEventListener('click', async function () {
-      // If modal currently shows a video, clear it and restore img holder
-      const existingVideo = modal.querySelector('video');
-      if (existingVideo) { existingVideo.remove(); modal.appendChild(modalContent); }
-
-      // Show image
-      modalContent.src = this.src;
-      modalContent.alt = this.alt || '';
-      modal.classList.add('show');
-      openModal();
-
-      // Stop any prior animation
-      modalContent.classList.remove('kenburns');
-
-      const isArtZoom = this.classList.contains('art-zoom');
-      const isMusic   = this.classList.contains('music-trigger') && this.dataset.audio;
-
-      // Set Ken Burns duration & optional path vars if needed
-      if (isArtZoom) {
-        const bpm   = Number(this.dataset.bpm || 96);
-        const beats = Number(this.dataset.beats || 16);
-        const loopSeconds = (60 * beats) / bpm;
-        modalContent.style.setProperty('--kb-dur', `${loopSeconds}s`);
-        // gentler motion defaults; override via data-* if you want
-        modalContent.style.setProperty('--kb-origin', this.dataset.origin || '50% 50%');
-        modalContent.style.setProperty('--kb-x1', this.dataset.kbx1 || '-1.5%');
-        modalContent.style.setProperty('--kb-y1', this.dataset.kby1 || '-1.5%');
-        modalContent.style.setProperty('--kb-x2', this.dataset.kbx2 || '1.5%');
-        modalContent.style.setProperty('--kb-y2', this.dataset.kby2 || '1.5%');
-      }
-
-      // Music first, then animation (so starts EXACTLY together)
-      if (isMusic) {
-        try {
-          music.src = this.dataset.audio;
-          music.load();
-          music.currentTime = 0;
-          await music.play();                 // wait until audio actually starts
-          modalContent.style.setProperty('--kb-delay', '0s');
-        } catch (_) {
-          // if autoplay blocked, still run the animation
-          modalContent.style.setProperty('--kb-delay', '0s');
-        }
-      } else {
-        stopMusic(true);
-        modalContent.style.setProperty('--kb-delay', '0s');
-      }
-
-      // Finally start the animation if needed
-      if (isArtZoom) {
-        void modalContent.offsetWidth;        // reflow for clean restart
-        modalContent.classList.add('kenburns');
-      }
-    });
-  });
-
-  // Video click → show video (pause music, no Ken Burns)
-  document.querySelectorAll('.media video').forEach(video => {
-    video.style.cursor = 'pointer';
-    video.addEventListener('click', function () {
-      stopMusic(true);
-
-      const videoModal = document.createElement('video');
-      videoModal.className = 'modal-video';
-      videoModal.controls = true;
-
-      const sourceEl = this.querySelector('source');
-      if (sourceEl) {
-        const source = document.createElement('source');
-        source.src = sourceEl.src;
-        source.type = sourceEl.type || 'video/mp4';
-        videoModal.appendChild(source);
-      }
-
-      // Clear modal content (keep close button)
-      modal.innerHTML = '';
-      modal.appendChild(closeBtn);
-      modal.appendChild(videoModal);
-      modal.classList.add('show');
-      openModal();
-
-      try { videoModal.play(); } catch (_) {}
-    });
-  });
-
-  // --- Close modal helpers ---
-  function closeModal() {
-    _closeModalOnly();
-    stopMusic(); // pause audio too
-  }
-
-  closeBtn.addEventListener('click', closeModal);
-  closeBtn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') closeModal();
-  });
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
-  });
-
-  // Expose for debugging if needed:
-  window.__modal = { modal, modalContent, closeBtn };
-});
-
-// Lazy code viewer
-function loadCode(filename) {
-  const pre = document.getElementById('code-' + filename);
-  if (pre.style.display === 'none') {
-    fetch('code/' + filename)
-      .then(res => res.text())
-      .then(data => {
-        pre.textContent = data;
-        pre.style.display = 'block';
-      });
-  } else {
-    pre.style.display = 'none';
-  }
-}
+  // Hidden reusable audio element (already in HTML)
+  const music = document.getElementById('
