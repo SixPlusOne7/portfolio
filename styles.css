@@ -397,3 +397,43 @@ button:hover {
   height: auto;
   max-height: 80vh;
 }
+
+/* ----------------------------
+   Ken Burns continuous glide
+----------------------------- */
+.kenburns {
+  animation: kb-zoom-pan var(--kb-dur, 60s) ease-in-out infinite alternate;
+  transform-origin: var(--kb-origin, 50% 50%);
+}
+
+@keyframes kb-zoom-pan {
+  0%   { transform: scale(1) translate(var(--kb-x1, -3%), var(--kb-y1, -3%)); }
+  100% { transform: scale(1.3) translate(var(--kb-x2, 3%), var(--kb-y2, 3%)); }
+}
+
+/* ----------------------------
+   On-beat pulse wrapper
+----------------------------- */
+.kb-beat-wrap {
+  display: inline-block;
+}
+
+.kb-beat-wrap.beating {
+  animation: beatPulse var(--beat-dur, 500ms) ease-in-out infinite;
+}
+
+@keyframes beatPulse {
+  0%, 100% { transform: scale(1); }
+  20%      { transform: scale(1.02); }
+}
+
+/* ----------------------------
+   Modal basics (keep existing)
+----------------------------- */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  padding-top: 60px;
+  left: 0; t
+
